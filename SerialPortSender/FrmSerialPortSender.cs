@@ -376,15 +376,33 @@ namespace SerialPortSender
         {
             try
             {
+                Thread.Sleep(500); // TODO : 等待数据传送完毕时间
+
                 string barcode = string.Empty;
+                string contentByHex = string.Empty;
                 if (FrmSerialPortSender.SendWithEnter)
                 {
                     barcode = serialPort1.ReadLine();
                 }
                 else
                 {
-                    Thread.Sleep(100);
-                    barcode = serialPort1.ReadExisting();
+                    int length = serialPort1.BytesToRead;
+                    byte[] buf = new byte[length];
+                    serialPort1.Read(buf, 0, length);
+                    barcode = System.Text.Encoding.Default.GetString(buf, 0, buf.Length);
+
+                    foreach (var i in buf)
+                    {
+                        string a = string.Format("{0:X}", i).PadLeft(2, '0');
+                        if (string.IsNullOrEmpty(contentByHex) == false)
+                        {
+                            contentByHex += " " + a;
+                        }
+                        else
+                        {
+                            contentByHex = a;
+                        }
+                    }
                 }
 
                 DataModel t = new DataModel();
@@ -392,6 +410,7 @@ namespace SerialPortSender
                 t.Status = "接收";
                 t.Date_Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 t.Content = barcode;
+                t.ContentByHex = contentByHex;
 
                 List<DataModel> templ = new List<DataModel>();
                 templ.Add(t);

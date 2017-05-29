@@ -12,5 +12,7 @@ namespace SerialPortSender
         public string Status { get; set; }
         public string Date_Time { get; set; }
         public string Content { get; set; }
+
+        public string ContentByHex { get; set; }
     }
 }
