@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using System.Reflection;
 
 namespace SerialPortSender
 {
@@ -38,6 +39,8 @@ namespace SerialPortSender
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
+
+            this.Text = string.Format("{0} - V {1}", this.Text, Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this.initEvent();
             this.initData();
@@ -189,11 +192,16 @@ namespace SerialPortSender
                 {
                     MessageBox.Show("当前内容不能设置自增长");
                     tmpCheckBox.Checked = false;
+                    FrmSerialPortSender.IncreasingAfterSend = false;
                 }
                 else
                 {
                     FrmSerialPortSender.IncreasingAfterSend = tmpCheckBox.Checked;
                 }
+            }
+            else
+            {
+                FrmSerialPortSender.IncreasingAfterSend = false;
             }
 
         }
