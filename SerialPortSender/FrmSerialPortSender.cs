@@ -18,10 +18,10 @@ namespace SerialPortSender
         /// </summary>
         private static bool SendContinue = false;
 
-        /// <summary>
-        /// 发送已回车符结束
-        /// </summary>
-        private static bool SendWithEnter = false;
+        ///// <summary>
+        ///// 发送以回车符结束
+        ///// </summary>
+        //private static bool SendWithEnter = false;
 
         /// <summary>
         /// 发送后自增长
@@ -50,7 +50,12 @@ namespace SerialPortSender
         private void initData()
         {
             this.txtTimeSpan.Text = "1000";
-            this.ckbEndWithEnter.Checked = true;
+
+            this.rbReportHead_None.Checked = true;  // 初始化配置 开始符号 无
+            this.RbReportHead_AllBtn_Click(this.rbReportHead_None, null);
+
+            this.rbReportEnd_CR_LF.Checked = true; // 初始化配置 结束符合 \r\n
+            this.RbReportEnd_AllBtn_Click(this.rbReportEnd_CR_LF, null);
         }
 
         private void initEvent()
@@ -68,11 +73,19 @@ namespace SerialPortSender
 
             #endregion
 
-            this.ckbEndWithEnter.CheckedChanged += CkbEndWithEnter_CheckedChanged;
-
             this.ckbSendContinue.CheckedChanged += CkbSendContinue_CheckedChanged;
 
             this.ckbIncreasing.CheckedChanged += CkbIncreasing_CheckedChanged;
+
+            this.rbReportHead_None.Click += RbReportHead_AllBtn_Click;
+            this.rbReportHead_STX.Click += RbReportHead_AllBtn_Click;
+            this.rbReportHead_ESC.Click += RbReportHead_AllBtn_Click;
+            this.rbReportHead_UserSetting.Click += RbReportHead_AllBtn_Click;
+
+            this.rbReportEnd_CR.Click += RbReportEnd_AllBtn_Click;
+            this.rbReportEnd_ETX.Click += RbReportEnd_AllBtn_Click;
+            this.rbReportEnd_CR_LF.Click += RbReportEnd_AllBtn_Click;
+            this.rbReportEnd_UserSetting.Click += RbReportEnd_AllBtn_Click;
 
             this.FormClosing += (s, e) =>
             {
@@ -80,26 +93,13 @@ namespace SerialPortSender
             };
         }
 
-        private void CkbEndWithEnter_CheckedChanged(object sender, EventArgs e)
+        private string getSendContent(string msg)
         {
-            if (sender is CheckBox)
-            {
-                CheckBox tmp = sender as CheckBox;
-                FrmSerialPortSender.SendWithEnter = tmp.Checked;
+            Report head = GetReportHead();
+            Report end = GetReportEnd();
 
-                if (FrmSerialPortSender.SendWithEnter)
-                {
-                    this.txtIncreasing.Enabled = true;
-                    if (string.IsNullOrEmpty(this.txtIncreasing.Text))
-                    {
-                        this.txtIncreasing.Text = "1";
-                    }
-                }
-                else
-                {
-                    this.txtIncreasing.Enabled = false;
-                }
-            }
+            string r = string.Format("{0}{1}{2}", head.Value, msg, end.Value);
+            return r;
         }
 
         private void BgWoker_DoWork(object sender, DoWorkEventArgs e)
@@ -247,7 +247,6 @@ namespace SerialPortSender
             this.btnScan.Enabled = true;
             this.btnEmpty.Enabled = true;
             this.ckbIncreasing.Enabled = true;
-            this.ckbEndWithEnter.Enabled = true;
             this.ckbSendContinue.Enabled = true;
             this.txtTimeSpan.Enabled = true;
             this.txtContent.Enabled = true;
@@ -262,7 +261,6 @@ namespace SerialPortSender
             this.btnScan.Enabled = false;
             this.btnEmpty.Enabled = false;
             this.ckbIncreasing.Enabled = false;
-            this.ckbEndWithEnter.Enabled = false;
             this.ckbSendContinue.Enabled = false;
             this.txtTimeSpan.Enabled = false;
             this.txtContent.Enabled = false;
@@ -319,20 +317,16 @@ namespace SerialPortSender
                     this.txtContent.Text = this.getIncreasingText(txtContent.Text);
                 }
 
-                if (FrmSerialPortSender.SendWithEnter)
-                {
-                    serialPort1.WriteLine(txtContent.Text);
-                }
-                else
-                {
-                    serialPort1.Write(txtContent.Text);
-                }
+                string sendContent = this.getSendContent(this.txtContent.Text);
+                serialPort1.Write(sendContent);
+
 
                 DataModel t = new DataModel();
                 t.No = this.DataList.Count + 1;
                 t.Status = "发送";
                 t.Date_Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 t.Content = txtContent.Text;
+                t.ContentByHex = ByteArray2HexString(sendContent);
 
                 List<DataModel> templ = new List<DataModel>();
                 templ.Add(t);
@@ -384,56 +378,175 @@ namespace SerialPortSender
         {
             try
             {
-                Thread.Sleep(500); // TODO : 等待数据传送完毕时间
-
                 string barcode = string.Empty;
-                string contentByHex = string.Empty;
-                if (FrmSerialPortSender.SendWithEnter)
-                {
-                    barcode = serialPort1.ReadLine();
-                }
-                else
-                {
-                    int length = serialPort1.BytesToRead;
-                    byte[] buf = new byte[length];
-                    serialPort1.Read(buf, 0, length);
-                    barcode = System.Text.Encoding.Default.GetString(buf, 0, buf.Length);
 
-                    foreach (var i in buf)
-                    {
-                        string a = string.Format("{0:X}", i).PadLeft(2, '0');
-                        if (string.IsNullOrEmpty(contentByHex) == false)
-                        {
-                            contentByHex += " " + a;
-                        }
-                        else
-                        {
-                            contentByHex = a;
-                        }
-                    }
-                }
+                Thread.Sleep(500);
+
+                int length = serialPort1.BytesToRead;
+                byte[] buf = new byte[length];
+                serialPort1.Read(buf, 0, length);
+                barcode = System.Text.Encoding.Default.GetString(buf, 0, buf.Length);
 
                 DataModel t = new DataModel();
                 t.No = this.DataList.Count + 1;
                 t.Status = "接收";
                 t.Date_Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 t.Content = barcode;
-                t.ContentByHex = contentByHex;
+                t.ContentByHex = ByteArray2HexString(buf);
 
                 List<DataModel> templ = new List<DataModel>();
                 templ.Add(t);
                 templ.AddRange(DataList);
                 DataList = templ;
-                this.Invoke((EventHandler)(delegate
-                {
-                    dataGridView1.DataSource = DataList;
-                }));
-
+                this.Invoke
+                (
+                    (EventHandler)
+                    (delegate { dataGridView1.DataSource = DataList; })
+                );
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
+        public static string ByteArray2HexString(byte[] buf)
+        {
+            string contentByHex = string.Empty;
+
+            foreach (byte i in buf)
+            {
+                string a = string.Format("{0:X}", i).PadLeft(2, '0');
+                if (string.IsNullOrEmpty(contentByHex) == false)
+                {
+                    contentByHex += " " + a;
+                }
+                else
+                {
+                    contentByHex = a;
+                }
+            }
+
+            return contentByHex;
+        }
+
+        public static string ByteArray2HexString(string msg)
+        {
+            byte[] buf = System.Text.Encoding.Default.GetBytes(msg);
+            string contentByHex = string.Empty;
+
+            foreach (byte i in buf)
+            {
+                string a = string.Format("{0:X}", i).PadLeft(2, '0');
+                if (string.IsNullOrEmpty(contentByHex) == false)
+                {
+                    contentByHex += " " + a;
+                }
+                else
+                {
+                    contentByHex = a;
+                }
+            }
+            return contentByHex;
+        }
+
+        #region 报文信息
+
+        void RbReportHead_AllBtn_Click(object sender, EventArgs e)
+        {
+            var r = GetReportHead();
+            this.txtReportHead_Hex.Text = r.HexString;
+            this.txtReportHead_ASCII.Text = r.ASCIIString;
+        }
+
+        void RbReportEnd_AllBtn_Click(object sender, EventArgs e)
+        {
+            var r = GetReportEnd();
+            this.txtReportEnd_Hex.Text = r.HexString;
+            this.txtReportEnd_ASCII.Text = r.ASCIIString;
+        }
+
+        Report GetReportHead()
+        {
+            Report r = new Report();
+
+            if (this.rbReportHead_None.Checked)
+            {
+                r.Value = string.Empty;
+
+                r.DisplayName = "无";
+                r.ASCIIString = string.Empty;
+                r.HexString = string.Empty;
+            }
+            else if (this.rbReportHead_STX.Checked)
+            {
+                char tmp = (char)0x02;
+                r.Value = tmp.ToString();
+
+                r.DisplayName = "STX";
+                r.ASCIIString = r.Value.ToString();
+                r.HexString = "02";
+            }
+            else if (this.rbReportHead_ESC.Checked)
+            {
+                char tmp = (char)0x1B;
+                r.Value = tmp.ToString();
+
+                r.DisplayName = "ESC";
+                r.ASCIIString = r.Value.ToString();
+                r.HexString = "1B";
+            }
+            else if (this.rbReportHead_UserSetting.Checked)
+            {
+
+            }
+
+            return r;
+        }
+
+        Report GetReportEnd()
+        {
+            Report r = new Report();
+
+            if (this.rbReportEnd_CR.Checked)
+            {
+                char tmp = (char)0x0D;
+
+                r.Value = tmp.ToString();
+                r.DisplayName = "无";
+                r.ASCIIString = r.Value.ToString();
+                r.HexString = "0D";
+            }
+            else if (this.rbReportEnd_ETX.Checked)
+            {
+                char tmp = (char)0x03;
+
+                r.Value = tmp.ToString();
+                r.DisplayName = "ETX";
+                r.ASCIIString = r.Value.ToString();
+                r.HexString = "03";
+            }
+            else if (this.rbReportEnd_CR_LF.Checked)
+            {
+                char tmp1 = (char)0x0D;
+                char tmp2 = (char)0x0A;
+
+                r.Value = string.Format("{0}{1}", tmp1, tmp2);
+                r.DisplayName = "CL+LF";
+                r.ASCIIString = r.Value.ToString();
+                r.HexString = "1B";
+            }
+            else if (this.rbReportEnd_UserSetting.Checked)
+            {
+
+            }
+
+            return r;
+        }
+
+        #endregion
+
     }
+
+
 }

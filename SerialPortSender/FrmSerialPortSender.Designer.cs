@@ -45,9 +45,26 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtIncreasing = new System.Windows.Forms.TextBox();
             this.ckbIncreasing = new System.Windows.Forms.CheckBox();
-            this.ckbEndWithEnter = new System.Windows.Forms.CheckBox();
             this.statusStrip_Status = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtReportHead_Hex = new System.Windows.Forms.TextBox();
+            this.txtReportHead_ASCII = new System.Windows.Forms.TextBox();
+            this.rbReportHead_UserSetting = new System.Windows.Forms.RadioButton();
+            this.rbReportHead_STX = new System.Windows.Forms.RadioButton();
+            this.rbReportHead_ESC = new System.Windows.Forms.RadioButton();
+            this.rbReportHead_None = new System.Windows.Forms.RadioButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rbReportEnd_UserSetting = new System.Windows.Forms.RadioButton();
+            this.rbReportEnd_ETX = new System.Windows.Forms.RadioButton();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtReportEnd_Hex = new System.Windows.Forms.TextBox();
+            this.txtReportEnd_ASCII = new System.Windows.Forms.TextBox();
+            this.rbReportEnd_CR_LF = new System.Windows.Forms.RadioButton();
+            this.rbReportEnd_CR = new System.Windows.Forms.RadioButton();
             this.ColumnNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,6 +73,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpen
@@ -82,7 +101,7 @@
             // 
             this.btnScan.Location = new System.Drawing.Point(328, 10);
             this.btnScan.Name = "btnScan";
-            this.btnScan.Size = new System.Drawing.Size(87, 112);
+            this.btnScan.Size = new System.Drawing.Size(87, 142);
             this.btnScan.TabIndex = 2;
             this.btnScan.Text = "发送";
             this.btnScan.UseVisualStyleBackColor = true;
@@ -98,7 +117,9 @@
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnNo,
@@ -106,10 +127,10 @@
             this.Column3,
             this.Column2,
             this.hexContent});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 190);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 325);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(612, 174);
+            this.dataGridView1.Size = new System.Drawing.Size(790, 257);
             this.dataGridView1.TabIndex = 4;
             // 
             // btnEmpty
@@ -211,25 +232,15 @@
             this.ckbIncreasing.Text = "自增长";
             this.ckbIncreasing.UseVisualStyleBackColor = true;
             // 
-            // ckbEndWithEnter
-            // 
-            this.ckbEndWithEnter.AutoSize = true;
-            this.ckbEndWithEnter.Location = new System.Drawing.Point(328, 131);
-            this.ckbEndWithEnter.Name = "ckbEndWithEnter";
-            this.ckbEndWithEnter.Size = new System.Drawing.Size(82, 18);
-            this.ckbEndWithEnter.TabIndex = 14;
-            this.ckbEndWithEnter.Text = "结束换行";
-            this.ckbEndWithEnter.UseVisualStyleBackColor = true;
-            // 
             // statusStrip_Status
             // 
             this.statusStrip_Status.ImageScalingSize = new System.Drawing.Size(18, 18);
             this.statusStrip_Status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip_Status.Location = new System.Drawing.Point(0, 369);
+            this.statusStrip_Status.Location = new System.Drawing.Point(0, 587);
             this.statusStrip_Status.Name = "statusStrip_Status";
             this.statusStrip_Status.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip_Status.Size = new System.Drawing.Size(633, 22);
+            this.statusStrip_Status.Size = new System.Drawing.Size(811, 22);
             this.statusStrip_Status.TabIndex = 15;
             this.statusStrip_Status.Text = "statusStrip1";
             // 
@@ -238,47 +249,235 @@
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(0, 17);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.txtReportHead_Hex);
+            this.groupBox1.Controls.Add(this.txtReportHead_ASCII);
+            this.groupBox1.Controls.Add(this.rbReportHead_UserSetting);
+            this.groupBox1.Controls.Add(this.rbReportHead_STX);
+            this.groupBox1.Controls.Add(this.rbReportHead_ESC);
+            this.groupBox1.Controls.Add(this.rbReportHead_None);
+            this.groupBox1.Location = new System.Drawing.Point(12, 189);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 130);
+            this.groupBox1.TabIndex = 16;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "报头";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 105);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(28, 14);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "HEX";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 78);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(42, 14);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "ASCII";
+            // 
+            // txtReportHead_Hex
+            // 
+            this.txtReportHead_Hex.Location = new System.Drawing.Point(63, 102);
+            this.txtReportHead_Hex.Name = "txtReportHead_Hex";
+            this.txtReportHead_Hex.Size = new System.Drawing.Size(127, 22);
+            this.txtReportHead_Hex.TabIndex = 6;
+            // 
+            // txtReportHead_ASCII
+            // 
+            this.txtReportHead_ASCII.Location = new System.Drawing.Point(63, 74);
+            this.txtReportHead_ASCII.Name = "txtReportHead_ASCII";
+            this.txtReportHead_ASCII.Size = new System.Drawing.Size(127, 22);
+            this.txtReportHead_ASCII.TabIndex = 5;
+            // 
+            // rbReportHead_UserSetting
+            // 
+            this.rbReportHead_UserSetting.AutoSize = true;
+            this.rbReportHead_UserSetting.Location = new System.Drawing.Point(75, 46);
+            this.rbReportHead_UserSetting.Name = "rbReportHead_UserSetting";
+            this.rbReportHead_UserSetting.Size = new System.Drawing.Size(67, 18);
+            this.rbReportHead_UserSetting.TabIndex = 4;
+            this.rbReportHead_UserSetting.TabStop = true;
+            this.rbReportHead_UserSetting.Text = "自定义";
+            this.rbReportHead_UserSetting.UseVisualStyleBackColor = true;
+            // 
+            // rbReportHead_STX
+            // 
+            this.rbReportHead_STX.AutoSize = true;
+            this.rbReportHead_STX.Location = new System.Drawing.Point(75, 21);
+            this.rbReportHead_STX.Name = "rbReportHead_STX";
+            this.rbReportHead_STX.Size = new System.Drawing.Size(46, 18);
+            this.rbReportHead_STX.TabIndex = 3;
+            this.rbReportHead_STX.TabStop = true;
+            this.rbReportHead_STX.Text = "STX";
+            this.rbReportHead_STX.UseVisualStyleBackColor = true;
+            // 
+            // rbReportHead_ESC
+            // 
+            this.rbReportHead_ESC.AutoSize = true;
+            this.rbReportHead_ESC.Location = new System.Drawing.Point(6, 46);
+            this.rbReportHead_ESC.Name = "rbReportHead_ESC";
+            this.rbReportHead_ESC.Size = new System.Drawing.Size(46, 18);
+            this.rbReportHead_ESC.TabIndex = 2;
+            this.rbReportHead_ESC.TabStop = true;
+            this.rbReportHead_ESC.Text = "ESC";
+            this.rbReportHead_ESC.UseVisualStyleBackColor = true;
+            // 
+            // rbReportHead_None
+            // 
+            this.rbReportHead_None.AutoSize = true;
+            this.rbReportHead_None.Location = new System.Drawing.Point(6, 21);
+            this.rbReportHead_None.Name = "rbReportHead_None";
+            this.rbReportHead_None.Size = new System.Drawing.Size(39, 18);
+            this.rbReportHead_None.TabIndex = 1;
+            this.rbReportHead_None.TabStop = true;
+            this.rbReportHead_None.Text = "无";
+            this.rbReportHead_None.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.rbReportEnd_UserSetting);
+            this.groupBox3.Controls.Add(this.rbReportEnd_ETX);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.txtReportEnd_Hex);
+            this.groupBox3.Controls.Add(this.txtReportEnd_ASCII);
+            this.groupBox3.Controls.Add(this.rbReportEnd_CR_LF);
+            this.groupBox3.Controls.Add(this.rbReportEnd_CR);
+            this.groupBox3.Location = new System.Drawing.Point(224, 189);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(200, 130);
+            this.groupBox3.TabIndex = 17;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "终端";
+            // 
+            // rbReportEnd_UserSetting
+            // 
+            this.rbReportEnd_UserSetting.AutoSize = true;
+            this.rbReportEnd_UserSetting.Location = new System.Drawing.Point(101, 46);
+            this.rbReportEnd_UserSetting.Name = "rbReportEnd_UserSetting";
+            this.rbReportEnd_UserSetting.Size = new System.Drawing.Size(67, 18);
+            this.rbReportEnd_UserSetting.TabIndex = 11;
+            this.rbReportEnd_UserSetting.TabStop = true;
+            this.rbReportEnd_UserSetting.Text = "自定义";
+            this.rbReportEnd_UserSetting.UseVisualStyleBackColor = true;
+            // 
+            // rbReportEnd_ETX
+            // 
+            this.rbReportEnd_ETX.AutoSize = true;
+            this.rbReportEnd_ETX.Location = new System.Drawing.Point(101, 21);
+            this.rbReportEnd_ETX.Name = "rbReportEnd_ETX";
+            this.rbReportEnd_ETX.Size = new System.Drawing.Size(46, 18);
+            this.rbReportEnd_ETX.TabIndex = 10;
+            this.rbReportEnd_ETX.TabStop = true;
+            this.rbReportEnd_ETX.Text = "ETX";
+            this.rbReportEnd_ETX.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 105);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(28, 14);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "HEX";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 78);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(42, 14);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "ASCII";
+            // 
+            // txtReportEnd_Hex
+            // 
+            this.txtReportEnd_Hex.Location = new System.Drawing.Point(46, 102);
+            this.txtReportEnd_Hex.Name = "txtReportEnd_Hex";
+            this.txtReportEnd_Hex.Size = new System.Drawing.Size(142, 22);
+            this.txtReportEnd_Hex.TabIndex = 3;
+            // 
+            // txtReportEnd_ASCII
+            // 
+            this.txtReportEnd_ASCII.Location = new System.Drawing.Point(46, 74);
+            this.txtReportEnd_ASCII.Name = "txtReportEnd_ASCII";
+            this.txtReportEnd_ASCII.Size = new System.Drawing.Size(142, 22);
+            this.txtReportEnd_ASCII.TabIndex = 2;
+            // 
+            // rbReportEnd_CR_LF
+            // 
+            this.rbReportEnd_CR_LF.AutoSize = true;
+            this.rbReportEnd_CR_LF.Location = new System.Drawing.Point(6, 46);
+            this.rbReportEnd_CR_LF.Name = "rbReportEnd_CR_LF";
+            this.rbReportEnd_CR_LF.Size = new System.Drawing.Size(60, 18);
+            this.rbReportEnd_CR_LF.TabIndex = 1;
+            this.rbReportEnd_CR_LF.TabStop = true;
+            this.rbReportEnd_CR_LF.Text = "CR+LF";
+            this.rbReportEnd_CR_LF.UseVisualStyleBackColor = true;
+            // 
+            // rbReportEnd_CR
+            // 
+            this.rbReportEnd_CR.AutoSize = true;
+            this.rbReportEnd_CR.Location = new System.Drawing.Point(6, 21);
+            this.rbReportEnd_CR.Name = "rbReportEnd_CR";
+            this.rbReportEnd_CR.Size = new System.Drawing.Size(39, 18);
+            this.rbReportEnd_CR.TabIndex = 0;
+            this.rbReportEnd_CR.TabStop = true;
+            this.rbReportEnd_CR.Text = "CR";
+            this.rbReportEnd_CR.UseVisualStyleBackColor = true;
+            // 
             // ColumnNo
             // 
             this.ColumnNo.DataPropertyName = "No";
             this.ColumnNo.HeaderText = "No.";
             this.ColumnNo.Name = "ColumnNo";
-            this.ColumnNo.Width = 40;
+            this.ColumnNo.Width = 50;
             // 
             // Column1
             // 
             this.Column1.DataPropertyName = "Status";
             this.Column1.HeaderText = "状态";
             this.Column1.Name = "Column1";
-            this.Column1.Width = 36;
+            this.Column1.Width = 70;
             // 
             // Column3
             // 
             this.Column3.DataPropertyName = "Date_Time";
-            this.Column3.HeaderText = "日期-时间";
+            this.Column3.HeaderText = "日期 & 时间";
             this.Column3.Name = "Column3";
-            this.Column3.Width = 130;
+            this.Column3.Width = 180;
             // 
             // Column2
             // 
             this.Column2.DataPropertyName = "Content";
-            this.Column2.HeaderText = "内容";
+            this.Column2.HeaderText = "内容 ( 发送不含报头&终端 )";
             this.Column2.Name = "Column2";
-            this.Column2.Width = 200;
+            this.Column2.Width = 230;
             // 
             // hexContent
             // 
             this.hexContent.DataPropertyName = "ContentByHex";
-            this.hexContent.HeaderText = "Hex";
+            this.hexContent.HeaderText = "Hex ( 包含报头终端 )";
             this.hexContent.Name = "hexContent";
+            this.hexContent.Width = 200;
             // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(633, 391);
+            this.ClientSize = new System.Drawing.Size(811, 609);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip_Status);
-            this.Controls.Add(this.ckbEndWithEnter);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnEmpty);
             this.Controls.Add(this.btnScan);
@@ -295,6 +494,10 @@
             this.groupBox2.PerformLayout();
             this.statusStrip_Status.ResumeLayout(false);
             this.statusStrip_Status.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -318,9 +521,26 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtIncreasing;
         private System.Windows.Forms.CheckBox ckbIncreasing;
-        private System.Windows.Forms.CheckBox ckbEndWithEnter;
         private System.Windows.Forms.StatusStrip statusStrip_Status;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtReportHead_Hex;
+        private System.Windows.Forms.TextBox txtReportHead_ASCII;
+        private System.Windows.Forms.RadioButton rbReportHead_UserSetting;
+        private System.Windows.Forms.RadioButton rbReportHead_STX;
+        private System.Windows.Forms.RadioButton rbReportHead_ESC;
+        private System.Windows.Forms.RadioButton rbReportHead_None;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RadioButton rbReportEnd_UserSetting;
+        private System.Windows.Forms.RadioButton rbReportEnd_ETX;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtReportEnd_Hex;
+        private System.Windows.Forms.TextBox txtReportEnd_ASCII;
+        private System.Windows.Forms.RadioButton rbReportEnd_CR_LF;
+        private System.Windows.Forms.RadioButton rbReportEnd_CR;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
