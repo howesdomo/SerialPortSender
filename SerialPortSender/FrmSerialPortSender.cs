@@ -49,6 +49,8 @@ namespace SerialPortSender
 
         private void initData()
         {
+            mThreadSleep_BeforeRead = cThreadSleep_BeforeRead;
+            this.txtThreadSleep_BeforeReadExsiting.Text = cThreadSleep_BeforeRead.ToString();
             this.txtTimeSpan.Text = "1000";
 
             this.rbReportHead_None.Checked = true;  // 初始化配置 开始符号 无
@@ -82,16 +84,73 @@ namespace SerialPortSender
             this.rbReportHead_ESC.Click += RbReportHead_AllBtn_Click;
             this.rbReportHead_UserSetting.Click += RbReportHead_AllBtn_Click;
 
+            this.rbReportEnd_None.Click += RbReportEnd_AllBtn_Click;
             this.rbReportEnd_CR.Click += RbReportEnd_AllBtn_Click;
             this.rbReportEnd_ETX.Click += RbReportEnd_AllBtn_Click;
             this.rbReportEnd_CR_LF.Click += RbReportEnd_AllBtn_Click;
             this.rbReportEnd_UserSetting.Click += RbReportEnd_AllBtn_Click;
+
+            this.txtThreadSleep_BeforeReadExsiting.TextChanged += TxtThreadSleep_BeforeReadExsiting_TextChanged;
+            this.txtThreadSleep_BeforeReadExsiting.LostFocus += TxtThreadSleep_BeforeReadExsiting_LostFocus;
 
             this.FormClosing += (s, e) =>
             {
                 this.closeSerialPort();
             };
         }
+
+        #region 设置 接收等待时间(毫秒)
+
+        private void TxtThreadSleep_BeforeReadExsiting_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                edit_ThreadSleep_BeforeReadExsiting();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void TxtThreadSleep_BeforeReadExsiting_LostFocus(object sender, EventArgs e)
+        {
+            try
+            {
+                edit_ThreadSleep_BeforeReadExsiting();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                txtThreadSleep_BeforeReadExsiting.Focus();
+                txtThreadSleep_BeforeReadExsiting.SelectAll();
+            }
+        }
+
+        private void edit_ThreadSleep_BeforeReadExsiting()
+        {
+            string tmp = this.txtThreadSleep_BeforeReadExsiting.Text;
+
+            int r = 0;
+
+            if (int.TryParse(tmp, out r))
+            {
+                if (r == 0)
+                {
+                    mThreadSleep_BeforeRead = null;
+                }
+                else
+                {
+                    mThreadSleep_BeforeRead = r;
+                }
+            }
+            else
+            {
+                throw new Exception("请设置正确的接收前等待时间(毫秒)");
+            }
+        }
+
+        #endregion
 
         private string getSendContent(string msg)
         {
@@ -220,6 +279,8 @@ namespace SerialPortSender
                 serialPort1.BaudRate = 9600;
                 serialPort1.Parity = System.IO.Ports.Parity.None;
                 serialPort1.DataBits = 8;
+                this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+
                 serialPort1.Open();
 
                 this.PortEnabled();
@@ -242,6 +303,7 @@ namespace SerialPortSender
         private void PortEnabled()
         {
             this.btnOpen.Enabled = false;
+            this.txtThreadSleep_BeforeReadExsiting.Enabled = false;
 
             this.btnclose.Enabled = true;
             this.btnScan.Enabled = true;
@@ -251,11 +313,13 @@ namespace SerialPortSender
             this.txtTimeSpan.Enabled = true;
             this.txtContent.Enabled = true;
             this.txtIncreasing.Enabled = true;
+
         }
 
         private void PortUnEnabled()
         {
             this.btnOpen.Enabled = true;
+            this.txtThreadSleep_BeforeReadExsiting.Enabled = true;
 
             this.btnclose.Enabled = false;
             this.btnScan.Enabled = false;
@@ -280,6 +344,15 @@ namespace SerialPortSender
                 FrmSerialPortSender.SendContinue = false;
                 Thread.Sleep(500);
                 this.ckbSendContinue.Checked = false;
+
+                // **** 关键 , 当发送端快速并且不停地发送信息, 此时调用 serialPort1.Close() 会卡死
+                // 故应 
+                // 1) 停止注册 DataReceived事件
+                // 2) Application.DoEvents();
+                // 3) serialPort1.Close();
+                this.serialPort1.DataReceived -= new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+                Thread.Sleep(500);
+                Application.DoEvents();
                 serialPort1.Close();
                 this.PortUnEnabled();
             }
@@ -324,7 +397,7 @@ namespace SerialPortSender
                 DataModel t = new DataModel();
                 t.No = this.DataList.Count + 1;
                 t.Status = "发送";
-                t.Date_Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                t.DateTimeInfo = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 t.Content = txtContent.Text;
                 t.ContentByHex = ByteArray2HexString(sendContent);
 
@@ -333,6 +406,11 @@ namespace SerialPortSender
                 templ.AddRange(this.DataList);
                 this.DataList = templ;
                 dataGridView1.DataSource = DataList;
+
+                if (cbExportLog.Checked == true)
+                {
+                    LogAsync(t);
+                }
             }
             catch (Exception ex)
             {
@@ -374,13 +452,25 @@ namespace SerialPortSender
             dataGridView1.DataSource = DataList;
         }
 
+        private const int cThreadSleep_BeforeRead = 80;
+
+        private int? mThreadSleep_BeforeRead { get; set; }
+
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
+            if (this.serialPort1.IsOpen == false)
+            {
+                return;
+            }
+
             try
             {
                 string barcode = string.Empty;
 
-                Thread.Sleep(500);
+                if (mThreadSleep_BeforeRead.HasValue)
+                {
+                    Thread.Sleep(mThreadSleep_BeforeRead.Value);
+                }
 
                 int length = serialPort1.BytesToRead;
                 byte[] buf = new byte[length];
@@ -390,7 +480,7 @@ namespace SerialPortSender
                 DataModel t = new DataModel();
                 t.No = this.DataList.Count + 1;
                 t.Status = "接收";
-                t.Date_Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                t.DateTimeInfo = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 t.Content = barcode;
                 t.ContentByHex = ByteArray2HexString(buf);
 
@@ -398,10 +488,18 @@ namespace SerialPortSender
                 templ.Add(t);
                 templ.AddRange(DataList);
                 DataList = templ;
+
+                if (cbExportLog.Checked == true)
+                {
+                    LogAsync(t);
+                }
+
                 this.Invoke
                 (
-                    (EventHandler)
-                    (delegate { dataGridView1.DataSource = DataList; })
+                    (EventHandler)(delegate
+                    {
+                        dataGridView1.DataSource = DataList;
+                    })
                 );
             }
             catch (Exception ex)
@@ -508,12 +606,19 @@ namespace SerialPortSender
         {
             Report r = new Report();
 
-            if (this.rbReportEnd_CR.Checked)
+            if (this.rbReportEnd_None.Checked)
+            {
+                r.Value = string.Empty;
+                r.DisplayName = "无";
+                r.ASCIIString = r.Value.ToString();
+                r.HexString = string.Empty;
+            }
+            else if (this.rbReportEnd_CR.Checked)
             {
                 char tmp = (char)0x0D;
 
                 r.Value = tmp.ToString();
-                r.DisplayName = "无";
+                r.DisplayName = "CR";
                 r.ASCIIString = r.Value.ToString();
                 r.HexString = "0D";
             }
@@ -542,6 +647,51 @@ namespace SerialPortSender
             }
 
             return r;
+        }
+
+        #endregion
+
+        #region 导出日志
+
+        private void LogAsync(DataModel args)
+        {
+            System.Threading.Tasks.Task myTask = new System.Threading.Tasks.Task(() =>
+            {
+                var dir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "SerialPortSenderLog");
+
+                if (System.IO.Directory.Exists(dir) == false)
+                {
+                    System.IO.Directory.CreateDirectory(dir);
+                }
+
+                var fileName = string.Format("Log_{0}.csvx", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                var filePath = System.IO.Path.Combine(dir, fileName);
+
+                System.IO.FileMode fileMode = System.IO.FileMode.Append;
+                if (System.IO.File.Exists(filePath) == false)
+                {
+                    fileMode = System.IO.FileMode.Create;
+                }
+
+                using (System.IO.FileStream fs = new System.IO.FileStream(filePath, fileMode))
+                {
+                    byte[] toWrite = System.Text.Encoding.Default.GetBytes(args.CSVXContent());
+                    if (fileMode == System.IO.FileMode.Append)
+                    {
+                        fs.Write(toWrite, 0, toWrite.Length);
+                    }
+                    else
+                    {
+                        byte[] head = System.Text.Encoding.Default.GetBytes(args.CSVXHeader());
+                        fs.Write(head, 0, head.Length);
+                        fs.Write(toWrite, 0, toWrite.Length);
+                        fs.Flush();
+                    }
+                }
+            });
+
+            myTask.Start();
         }
 
         #endregion

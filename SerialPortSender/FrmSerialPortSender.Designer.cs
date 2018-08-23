@@ -34,6 +34,11 @@
             this.btnScan = new System.Windows.Forms.Button();
             this.txtContent = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ColumnNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hexContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnEmpty = new System.Windows.Forms.Button();
             this.cmbCom = new System.Windows.Forms.ComboBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
@@ -65,11 +70,10 @@
             this.txtReportEnd_ASCII = new System.Windows.Forms.TextBox();
             this.rbReportEnd_CR_LF = new System.Windows.Forms.RadioButton();
             this.rbReportEnd_CR = new System.Windows.Forms.RadioButton();
-            this.ColumnNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.hexContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cbExportLog = new System.Windows.Forms.CheckBox();
+            this.txtThreadSleep_BeforeReadExsiting = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.rbReportEnd_None = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
@@ -133,6 +137,41 @@
             this.dataGridView1.Size = new System.Drawing.Size(790, 257);
             this.dataGridView1.TabIndex = 4;
             // 
+            // ColumnNo
+            // 
+            this.ColumnNo.DataPropertyName = "No";
+            this.ColumnNo.HeaderText = "No.";
+            this.ColumnNo.Name = "ColumnNo";
+            this.ColumnNo.Width = 50;
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "Status";
+            this.Column1.HeaderText = "状态";
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 70;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "DateTimeInfo";
+            this.Column3.HeaderText = "日期 & 时间";
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 180;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "Content";
+            this.Column2.HeaderText = "内容 ( 发送不含报头&终端 )";
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 230;
+            // 
+            // hexContent
+            // 
+            this.hexContent.DataPropertyName = "ContentByHex";
+            this.hexContent.HeaderText = "Hex ( 包含报头终端 )";
+            this.hexContent.Name = "hexContent";
+            this.hexContent.Width = 200;
+            // 
             // btnEmpty
             // 
             this.btnEmpty.Location = new System.Drawing.Point(328, 158);
@@ -151,10 +190,6 @@
             this.cmbCom.Name = "cmbCom";
             this.cmbCom.Size = new System.Drawing.Size(87, 21);
             this.cmbCom.TabIndex = 6;
-            // 
-            // serialPort1
-            // 
-            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
             // ckbSendContinue
             // 
@@ -344,7 +379,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.rbReportEnd_UserSetting);
+            this.groupBox3.Controls.Add(this.rbReportEnd_None);
             this.groupBox3.Controls.Add(this.rbReportEnd_ETX);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label6);
@@ -362,7 +397,7 @@
             // rbReportEnd_UserSetting
             // 
             this.rbReportEnd_UserSetting.AutoSize = true;
-            this.rbReportEnd_UserSetting.Location = new System.Drawing.Point(101, 46);
+            this.rbReportEnd_UserSetting.Location = new System.Drawing.Point(370, 236);
             this.rbReportEnd_UserSetting.Name = "rbReportEnd_UserSetting";
             this.rbReportEnd_UserSetting.Size = new System.Drawing.Size(67, 18);
             this.rbReportEnd_UserSetting.TabIndex = 11;
@@ -435,46 +470,52 @@
             this.rbReportEnd_CR.Text = "CR";
             this.rbReportEnd_CR.UseVisualStyleBackColor = true;
             // 
-            // ColumnNo
+            // cbExportLog
             // 
-            this.ColumnNo.DataPropertyName = "No";
-            this.ColumnNo.HeaderText = "No.";
-            this.ColumnNo.Name = "ColumnNo";
-            this.ColumnNo.Width = 50;
+            this.cbExportLog.AutoSize = true;
+            this.cbExportLog.Location = new System.Drawing.Point(650, 154);
+            this.cbExportLog.Name = "cbExportLog";
+            this.cbExportLog.Size = new System.Drawing.Size(110, 18);
+            this.cbExportLog.TabIndex = 18;
+            this.cbExportLog.Text = "生成日志文件";
+            this.cbExportLog.UseVisualStyleBackColor = true;
             // 
-            // Column1
+            // txtThreadSleep_BeforeReadExsiting
             // 
-            this.Column1.DataPropertyName = "Status";
-            this.Column1.HeaderText = "状态";
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 70;
+            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(666, 64);
+            this.txtThreadSleep_BeforeReadExsiting.Name = "txtThreadSleep_BeforeReadExsiting";
+            this.txtThreadSleep_BeforeReadExsiting.Size = new System.Drawing.Size(114, 22);
+            this.txtThreadSleep_BeforeReadExsiting.TabIndex = 19;
             // 
-            // Column3
+            // label8
             // 
-            this.Column3.DataPropertyName = "Date_Time";
-            this.Column3.HeaderText = "日期 & 时间";
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 180;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(647, 15);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(133, 14);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "接收等待时间(毫秒)";
             // 
-            // Column2
+            // rbReportEnd_None
             // 
-            this.Column2.DataPropertyName = "Content";
-            this.Column2.HeaderText = "内容 ( 发送不含报头&终端 )";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 230;
-            // 
-            // hexContent
-            // 
-            this.hexContent.DataPropertyName = "ContentByHex";
-            this.hexContent.HeaderText = "Hex ( 包含报头终端 )";
-            this.hexContent.Name = "hexContent";
-            this.hexContent.Width = 200;
+            this.rbReportEnd_None.AutoSize = true;
+            this.rbReportEnd_None.Location = new System.Drawing.Point(101, 46);
+            this.rbReportEnd_None.Name = "rbReportEnd_None";
+            this.rbReportEnd_None.Size = new System.Drawing.Size(39, 18);
+            this.rbReportEnd_None.TabIndex = 12;
+            this.rbReportEnd_None.TabStop = true;
+            this.rbReportEnd_None.Text = "无";
+            this.rbReportEnd_None.UseVisualStyleBackColor = true;
             // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 609);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.rbReportEnd_UserSetting);
+            this.Controls.Add(this.txtThreadSleep_BeforeReadExsiting);
+            this.Controls.Add(this.cbExportLog);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip_Status);
@@ -541,10 +582,14 @@
         private System.Windows.Forms.TextBox txtReportEnd_ASCII;
         private System.Windows.Forms.RadioButton rbReportEnd_CR_LF;
         private System.Windows.Forms.RadioButton rbReportEnd_CR;
+        private System.Windows.Forms.CheckBox cbExportLog;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn hexContent;
+        private System.Windows.Forms.TextBox txtThreadSleep_BeforeReadExsiting;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.RadioButton rbReportEnd_None;
     }
 }
