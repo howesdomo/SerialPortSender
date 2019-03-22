@@ -696,6 +696,19 @@ namespace SerialPortSender
 
         #endregion
 
+        /// <summary>
+        /// 双击DataGridView内容, 复制内容到输入框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var rowCollection = this.dataGridView1.Rows[e.RowIndex];
+            var cell = rowCollection.Cells[e.ColumnIndex];
+            string content = cell.Value.ToString();
+
+            this.txtContent.Text = content;
+        }
     }
 
 

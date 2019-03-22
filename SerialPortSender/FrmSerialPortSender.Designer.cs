@@ -62,7 +62,7 @@
             this.rbReportHead_ESC = new System.Windows.Forms.RadioButton();
             this.rbReportHead_None = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.rbReportEnd_UserSetting = new System.Windows.Forms.RadioButton();
+            this.rbReportEnd_None = new System.Windows.Forms.RadioButton();
             this.rbReportEnd_ETX = new System.Windows.Forms.RadioButton();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -70,10 +70,10 @@
             this.txtReportEnd_ASCII = new System.Windows.Forms.TextBox();
             this.rbReportEnd_CR_LF = new System.Windows.Forms.RadioButton();
             this.rbReportEnd_CR = new System.Windows.Forms.RadioButton();
+            this.rbReportEnd_UserSetting = new System.Windows.Forms.RadioButton();
             this.cbExportLog = new System.Windows.Forms.CheckBox();
             this.txtThreadSleep_BeforeReadExsiting = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.rbReportEnd_None = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
@@ -133,15 +133,18 @@
             this.hexContent});
             this.dataGridView1.Location = new System.Drawing.Point(12, 325);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(790, 257);
             this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
             // 
             // ColumnNo
             // 
             this.ColumnNo.DataPropertyName = "No";
             this.ColumnNo.HeaderText = "No.";
             this.ColumnNo.Name = "ColumnNo";
+            this.ColumnNo.ReadOnly = true;
             this.ColumnNo.Width = 50;
             // 
             // Column1
@@ -149,6 +152,7 @@
             this.Column1.DataPropertyName = "Status";
             this.Column1.HeaderText = "状态";
             this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             this.Column1.Width = 70;
             // 
             // Column3
@@ -156,6 +160,7 @@
             this.Column3.DataPropertyName = "DateTimeInfo";
             this.Column3.HeaderText = "日期 & 时间";
             this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             this.Column3.Width = 180;
             // 
             // Column2
@@ -163,6 +168,7 @@
             this.Column2.DataPropertyName = "Content";
             this.Column2.HeaderText = "内容 ( 发送不含报头&终端 )";
             this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             this.Column2.Width = 230;
             // 
             // hexContent
@@ -170,6 +176,7 @@
             this.hexContent.DataPropertyName = "ContentByHex";
             this.hexContent.HeaderText = "Hex ( 包含报头终端 )";
             this.hexContent.Name = "hexContent";
+            this.hexContent.ReadOnly = true;
             this.hexContent.Width = 200;
             // 
             // btnEmpty
@@ -394,16 +401,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "终端";
             // 
-            // rbReportEnd_UserSetting
+            // rbReportEnd_None
             // 
-            this.rbReportEnd_UserSetting.AutoSize = true;
-            this.rbReportEnd_UserSetting.Location = new System.Drawing.Point(370, 236);
-            this.rbReportEnd_UserSetting.Name = "rbReportEnd_UserSetting";
-            this.rbReportEnd_UserSetting.Size = new System.Drawing.Size(67, 18);
-            this.rbReportEnd_UserSetting.TabIndex = 11;
-            this.rbReportEnd_UserSetting.TabStop = true;
-            this.rbReportEnd_UserSetting.Text = "自定义";
-            this.rbReportEnd_UserSetting.UseVisualStyleBackColor = true;
+            this.rbReportEnd_None.AutoSize = true;
+            this.rbReportEnd_None.Location = new System.Drawing.Point(101, 46);
+            this.rbReportEnd_None.Name = "rbReportEnd_None";
+            this.rbReportEnd_None.Size = new System.Drawing.Size(39, 18);
+            this.rbReportEnd_None.TabIndex = 12;
+            this.rbReportEnd_None.TabStop = true;
+            this.rbReportEnd_None.Text = "无";
+            this.rbReportEnd_None.UseVisualStyleBackColor = true;
             // 
             // rbReportEnd_ETX
             // 
@@ -470,6 +477,17 @@
             this.rbReportEnd_CR.Text = "CR";
             this.rbReportEnd_CR.UseVisualStyleBackColor = true;
             // 
+            // rbReportEnd_UserSetting
+            // 
+            this.rbReportEnd_UserSetting.AutoSize = true;
+            this.rbReportEnd_UserSetting.Location = new System.Drawing.Point(370, 236);
+            this.rbReportEnd_UserSetting.Name = "rbReportEnd_UserSetting";
+            this.rbReportEnd_UserSetting.Size = new System.Drawing.Size(67, 18);
+            this.rbReportEnd_UserSetting.TabIndex = 11;
+            this.rbReportEnd_UserSetting.TabStop = true;
+            this.rbReportEnd_UserSetting.Text = "自定义";
+            this.rbReportEnd_UserSetting.UseVisualStyleBackColor = true;
+            // 
             // cbExportLog
             // 
             this.cbExportLog.AutoSize = true;
@@ -495,17 +513,6 @@
             this.label8.Size = new System.Drawing.Size(133, 14);
             this.label8.TabIndex = 20;
             this.label8.Text = "接收等待时间(毫秒)";
-            // 
-            // rbReportEnd_None
-            // 
-            this.rbReportEnd_None.AutoSize = true;
-            this.rbReportEnd_None.Location = new System.Drawing.Point(101, 46);
-            this.rbReportEnd_None.Name = "rbReportEnd_None";
-            this.rbReportEnd_None.Size = new System.Drawing.Size(39, 18);
-            this.rbReportEnd_None.TabIndex = 12;
-            this.rbReportEnd_None.TabStop = true;
-            this.rbReportEnd_None.Text = "无";
-            this.rbReportEnd_None.UseVisualStyleBackColor = true;
             // 
             // FrmSerialPortSender
             // 
