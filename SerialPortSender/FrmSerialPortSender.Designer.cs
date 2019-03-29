@@ -74,11 +74,22 @@
             this.cbExportLog = new System.Windows.Forms.CheckBox();
             this.txtThreadSleep_BeforeReadExsiting = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.cbBaudRate = new System.Windows.Forms.ComboBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnResetSerialPort = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbStopBits = new System.Windows.Forms.ComboBox();
+            this.cbParity = new System.Windows.Forms.ComboBox();
+            this.cbDataBits = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpen
@@ -250,9 +261,9 @@
             this.groupBox2.Controls.Add(this.ckbSendContinue);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.txtTimeSpan);
-            this.groupBox2.Location = new System.Drawing.Point(428, 13);
+            this.groupBox2.Location = new System.Drawing.Point(622, 13);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(196, 170);
+            this.groupBox2.Size = new System.Drawing.Size(177, 170);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "持续发送";
@@ -491,7 +502,7 @@
             // cbExportLog
             // 
             this.cbExportLog.AutoSize = true;
-            this.cbExportLog.Location = new System.Drawing.Point(650, 154);
+            this.cbExportLog.Location = new System.Drawing.Point(447, 301);
             this.cbExportLog.Name = "cbExportLog";
             this.cbExportLog.Size = new System.Drawing.Size(110, 18);
             this.cbExportLog.TabIndex = 18;
@@ -500,7 +511,7 @@
             // 
             // txtThreadSleep_BeforeReadExsiting
             // 
-            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(666, 64);
+            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(443, 259);
             this.txtThreadSleep_BeforeReadExsiting.Name = "txtThreadSleep_BeforeReadExsiting";
             this.txtThreadSleep_BeforeReadExsiting.Size = new System.Drawing.Size(114, 22);
             this.txtThreadSleep_BeforeReadExsiting.TabIndex = 19;
@@ -508,17 +519,117 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(647, 15);
+            this.label8.Location = new System.Drawing.Point(440, 224);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(133, 14);
             this.label8.TabIndex = 20;
             this.label8.Text = "接收等待时间(毫秒)";
+            // 
+            // cbBaudRate
+            // 
+            this.cbBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbBaudRate.FormattingEnabled = true;
+            this.cbBaudRate.Location = new System.Drawing.Point(76, 21);
+            this.cbBaudRate.Name = "cbBaudRate";
+            this.cbBaudRate.Size = new System.Drawing.Size(87, 21);
+            this.cbBaudRate.TabIndex = 21;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.btnResetSerialPort);
+            this.groupBox4.Controls.Add(this.label12);
+            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.cbStopBits);
+            this.groupBox4.Controls.Add(this.cbParity);
+            this.groupBox4.Controls.Add(this.cbDataBits);
+            this.groupBox4.Controls.Add(this.cbBaudRate);
+            this.groupBox4.Location = new System.Drawing.Point(431, 13);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(177, 170);
+            this.groupBox4.TabIndex = 22;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "串口设置";
+            // 
+            // btnResetSerialPort
+            // 
+            this.btnResetSerialPort.Location = new System.Drawing.Point(12, 140);
+            this.btnResetSerialPort.Name = "btnResetSerialPort";
+            this.btnResetSerialPort.Size = new System.Drawing.Size(151, 25);
+            this.btnResetSerialPort.TabIndex = 23;
+            this.btnResetSerialPort.Text = "重置";
+            this.btnResetSerialPort.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(23, 114);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(49, 14);
+            this.label12.TabIndex = 28;
+            this.label12.Text = "停止位";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(9, 84);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(63, 14);
+            this.label11.TabIndex = 27;
+            this.label11.Text = "奇偶校验";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(23, 53);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(49, 14);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "数据位";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(23, 24);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(49, 14);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "波特率";
+            // 
+            // cbStopBits
+            // 
+            this.cbStopBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStopBits.FormattingEnabled = true;
+            this.cbStopBits.Location = new System.Drawing.Point(76, 111);
+            this.cbStopBits.Name = "cbStopBits";
+            this.cbStopBits.Size = new System.Drawing.Size(87, 21);
+            this.cbStopBits.TabIndex = 24;
+            // 
+            // cbParity
+            // 
+            this.cbParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbParity.FormattingEnabled = true;
+            this.cbParity.Location = new System.Drawing.Point(76, 81);
+            this.cbParity.Name = "cbParity";
+            this.cbParity.Size = new System.Drawing.Size(87, 21);
+            this.cbParity.TabIndex = 23;
+            // 
+            // cbDataBits
+            // 
+            this.cbDataBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataBits.FormattingEnabled = true;
+            this.cbDataBits.Location = new System.Drawing.Point(76, 50);
+            this.cbDataBits.Name = "cbDataBits";
+            this.cbDataBits.Size = new System.Drawing.Size(87, 21);
+            this.cbDataBits.TabIndex = 22;
             // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 609);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.rbReportEnd_UserSetting);
             this.Controls.Add(this.txtThreadSleep_BeforeReadExsiting);
@@ -546,6 +657,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -598,5 +711,15 @@
         private System.Windows.Forms.TextBox txtThreadSleep_BeforeReadExsiting;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RadioButton rbReportEnd_None;
+        private System.Windows.Forms.ComboBox cbBaudRate;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cbStopBits;
+        private System.Windows.Forms.ComboBox cbParity;
+        private System.Windows.Forms.ComboBox cbDataBits;
+        private System.Windows.Forms.Button btnResetSerialPort;
     }
 }

@@ -58,6 +58,30 @@ namespace SerialPortSender
 
             this.rbReportEnd_CR_LF.Checked = true; // 初始化配置 结束符合 \r\n
             this.RbReportEnd_AllBtn_Click(this.rbReportEnd_CR_LF, null);
+
+            var baudRateList = Util.IO.SerialPortUtil.GetBaudRateList();
+            this.cbBaudRate.DataSource = baudRateList;
+            this.cbBaudRate.DisplayMember = "DisplayName";
+            this.Default_BaudRate = baudRateList.First(i => i.Value == 9600);
+            this.cbBaudRate.SelectedItem = this.Default_BaudRate;
+
+            var dataBitsList = Util.IO.SerialPortUtil.GetDataBitsList();
+            this.cbDataBits.DataSource = dataBitsList;
+            this.cbDataBits.DisplayMember = "DisplayName";
+            this.Default_DataBits = dataBitsList.First(i => i.Value == 8);
+            this.cbDataBits.SelectedItem = this.Default_DataBits;
+
+            var parityList = Util.IO.SerialPortUtil.GetParityList();
+            this.cbParity.DataSource = parityList;
+            this.cbParity.DisplayMember = "DisplayName";
+            this.Default_Parity = parityList.First(i => i.Value == System.IO.Ports.Parity.None);
+            this.cbParity.SelectedItem = this.Default_Parity;
+
+            var stopBitsList = Util.IO.SerialPortUtil.GetStopBitsList();
+            this.cbStopBits.DataSource = stopBitsList;
+            this.cbStopBits.DisplayMember = "DisplayName";
+            this.Default_StopBits = stopBitsList.First(i => i.Value == System.IO.Ports.StopBits.One);
+            this.cbStopBits.SelectedItem = this.Default_StopBits;
         }
 
         private void initEvent()
@@ -97,6 +121,8 @@ namespace SerialPortSender
             {
                 this.closeSerialPort();
             };
+
+            this.btnResetSerialPort.Click += btnResetSerialPort_Click;
         }
 
         #region 设置 接收等待时间(毫秒)
@@ -276,9 +302,12 @@ namespace SerialPortSender
             try
             {
                 serialPort1.PortName = cmbCom.Text;
-                serialPort1.BaudRate = 9600;
-                serialPort1.Parity = System.IO.Ports.Parity.None;
-                serialPort1.DataBits = 8;
+
+                serialPort1.BaudRate = (this.cbBaudRate.SelectedItem as Util.IO.BaudRate).Value;
+                serialPort1.DataBits = (this.cbDataBits.SelectedItem as Util.IO.DataBits).Value;
+                serialPort1.Parity = (this.cbParity.SelectedItem as Util.IO.Parity).Value;
+                serialPort1.StopBits = (this.cbStopBits.SelectedItem as Util.IO.StopBits).Value;
+
                 this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
 
                 serialPort1.Open();
@@ -314,6 +343,11 @@ namespace SerialPortSender
             this.txtContent.Enabled = true;
             this.txtIncreasing.Enabled = true;
 
+            this.cbBaudRate.Enabled = false;
+            this.cbDataBits.Enabled = false;
+            this.cbParity.Enabled = false;
+            this.cbStopBits.Enabled = false;
+            this.btnResetSerialPort.Enabled = false;
         }
 
         private void PortUnEnabled()
@@ -329,6 +363,12 @@ namespace SerialPortSender
             this.txtTimeSpan.Enabled = false;
             this.txtContent.Enabled = false;
             this.txtIncreasing.Enabled = false;
+
+            this.cbBaudRate.Enabled = true;
+            this.cbDataBits.Enabled = true;
+            this.cbParity.Enabled = true;
+            this.cbStopBits.Enabled = true;
+            this.btnResetSerialPort.Enabled = true;
         }
 
         private void btnclose_Click(object sender, EventArgs e)
@@ -708,6 +748,20 @@ namespace SerialPortSender
             string content = cell.Value.ToString();
 
             this.txtContent.Text = content;
+        }
+
+
+        public Util.IO.BaudRate Default_BaudRate { get; set; }
+        public Util.IO.DataBits Default_DataBits { get; set; }
+        public Util.IO.Parity Default_Parity { get; set; }
+        public Util.IO.StopBits Default_StopBits { get; set; }
+
+        private void btnResetSerialPort_Click(object sender, EventArgs e)
+        {
+            this.cbBaudRate.SelectedItem = this.Default_BaudRate;
+            this.cbDataBits.SelectedItem = this.Default_DataBits;
+            this.cbParity.SelectedItem = this.Default_Parity;
+            this.cbStopBits.SelectedItem = this.Default_StopBits;
         }
     }
 
