@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmSerialPortSender));
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnclose = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
@@ -646,6 +647,7 @@
             this.Controls.Add(this.txtContent);
             this.Controls.Add(this.btnclose);
             this.Controls.Add(this.btnOpen);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmSerialPortSender";
             this.Text = "端口发送接收数据模拟";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
