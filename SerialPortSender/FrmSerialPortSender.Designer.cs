@@ -85,12 +85,20 @@
             this.cbStopBits = new System.Windows.Forms.ComboBox();
             this.cbParity = new System.Windows.Forms.ComboBox();
             this.cbDataBits = new System.Windows.Forms.ComboBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.txtServerIP = new System.Windows.Forms.TextBox();
+            this.txtServerPort = new System.Windows.Forms.TextBox();
+            this.btnServerStart = new System.Windows.Forms.Button();
+            this.btnServerStop = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpen
@@ -625,11 +633,79 @@
             this.cbDataBits.Size = new System.Drawing.Size(87, 21);
             this.cbDataBits.TabIndex = 22;
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label14);
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.btnServerStop);
+            this.groupBox5.Controls.Add(this.btnServerStart);
+            this.groupBox5.Controls.Add(this.txtServerPort);
+            this.groupBox5.Controls.Add(this.txtServerIP);
+            this.groupBox5.Location = new System.Drawing.Point(579, 189);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(220, 130);
+            this.groupBox5.TabIndex = 23;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "手机模拟串口助手 - 服务器端";
+            // 
+            // txtServerIP
+            // 
+            this.txtServerIP.Location = new System.Drawing.Point(78, 26);
+            this.txtServerIP.Name = "txtServerIP";
+            this.txtServerIP.Size = new System.Drawing.Size(114, 22);
+            this.txtServerIP.TabIndex = 9;
+            this.txtServerIP.Text = "127.0.0.1";
+            // 
+            // txtServerPort
+            // 
+            this.txtServerPort.Location = new System.Drawing.Point(78, 54);
+            this.txtServerPort.Name = "txtServerPort";
+            this.txtServerPort.Size = new System.Drawing.Size(114, 22);
+            this.txtServerPort.TabIndex = 14;
+            this.txtServerPort.Text = "48001";
+            // 
+            // btnServerStart
+            // 
+            this.btnServerStart.Location = new System.Drawing.Point(16, 94);
+            this.btnServerStart.Name = "btnServerStart";
+            this.btnServerStart.Size = new System.Drawing.Size(77, 25);
+            this.btnServerStart.TabIndex = 24;
+            this.btnServerStart.Text = "开始";
+            this.btnServerStart.UseVisualStyleBackColor = true;
+            // 
+            // btnServerStop
+            // 
+            this.btnServerStop.Location = new System.Drawing.Point(115, 94);
+            this.btnServerStop.Name = "btnServerStop";
+            this.btnServerStop.Size = new System.Drawing.Size(77, 25);
+            this.btnServerStop.TabIndex = 25;
+            this.btnServerStop.Text = "停止";
+            this.btnServerStop.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(23, 30);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(21, 14);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "IP";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(23, 58);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(35, 14);
+            this.label14.TabIndex = 27;
+            this.label14.Text = "端口";
+            // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 609);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.rbReportEnd_UserSetting);
@@ -661,6 +737,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -723,5 +801,12 @@
         private System.Windows.Forms.ComboBox cbParity;
         private System.Windows.Forms.ComboBox cbDataBits;
         private System.Windows.Forms.Button btnResetSerialPort;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button btnServerStop;
+        private System.Windows.Forms.Button btnServerStart;
+        private System.Windows.Forms.TextBox txtServerPort;
+        private System.Windows.Forms.TextBox txtServerIP;
     }
 }

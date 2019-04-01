@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.Reflection;
+using System.Net;
 
 namespace SerialPortSender
 {
@@ -123,6 +124,10 @@ namespace SerialPortSender
             };
 
             this.btnResetSerialPort.Click += btnResetSerialPort_Click;
+
+
+            this.btnServerStart.Click += BtnServerStart_Click;
+            this.btnServerStop.Click += BtnServerStop_Click;
         }
 
         #region 设置 接收等待时间(毫秒)
@@ -763,6 +768,115 @@ namespace SerialPortSender
             this.cbParity.SelectedItem = this.Default_Parity;
             this.cbStopBits.SelectedItem = this.Default_StopBits;
         }
+
+
+
+
+
+        #region Socket Server
+
+        //定义Socket对象
+        System.Net.Sockets.Socket mServerSocket { get; set; }
+        //定义监听线程
+        Thread mListenThread { get; set; }
+        //定义接收客户端数据线程
+        Thread mThreadReceive { get; set; }
+        //定义双方通信
+        System.Net.Sockets.Socket mSocket { get; set; }
+
+
+        private void BtnServerStart_Click(object sender, EventArgs e)
+        {
+            if (mServerSocket != null || mListenThread != null)
+            {
+                MessageBox.Show("ServerSocket is Connected");
+                return;
+            }
+
+            IPAddress ip = IPAddress.Parse(this.txtServerIP.Text.TrimAdv());
+            mServerSocket = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Tcp);
+            try
+            {
+                //绑定ip和端口
+                mServerSocket.Bind(new IPEndPoint(ip, Convert.ToInt32(this.txtServerPort.Text.TrimAdv())));
+                //设置最多10个排队连接请求
+                mServerSocket.Listen(10);
+                //开启线程循环监听
+                mListenThread = new Thread(ListenClientConnect);
+                mListenThread.Start();
+            }
+            catch (Exception ex)
+            {
+                mServerSocket = null;
+                mListenThread = null;
+
+                MessageBox.Show(ex.GetFullInfo());
+            }
+        }
+
+        private void BtnServerStop_Click(object sender, EventArgs e)
+        {
+            if (mServerSocket == null || mListenThread == null)
+            {
+                MessageBox.Show("ServerSocket is not Connected");
+                return;
+            }
+
+            try
+            {
+                //socket关闭
+                mServerSocket.Close();
+                //线程关闭
+                mListenThread.Abort();
+                mThreadReceive.Abort();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.GetFullInfo());
+            }
+        }
+
+
+        private void ListenClientConnect()
+        {
+            while (true)
+            {
+                //监听到客户端的连接，获取双方通信socket
+                mSocket = mServerSocket.Accept();
+                //创建线程循环接收客户端发送的数据
+                mThreadReceive = new Thread(Receive);
+                //传入双方通信socket
+                mThreadReceive.Start(mSocket);
+            }
+        }
+
+        //接收客户端数据
+        private void Receive(object socket)
+        {
+            try
+            {
+                System.Net.Sockets.Socket myClientSocket = (System.Net.Sockets.Socket)socket;
+                while (true)
+                {
+                    byte[] buf = new byte[65535];
+                    int r = myClientSocket.Receive(buf);
+                    string str = Encoding.Default.GetString(buf, 0, r);
+                    this.Invoke(new Action(() =>
+                    {
+                        // serialPort1_DataReceived_Part2(str, buf);
+                        this.txtContent.Text = str;
+                        this.btnScan_Click(this.btnScan, new EventArgs());
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.GetFullInfo());
+            }
+        }
+
+        #endregion
+
     }
 
 
