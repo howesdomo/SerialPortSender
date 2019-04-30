@@ -86,12 +86,16 @@
             this.cbParity = new System.Windows.Forms.ComboBox();
             this.cbDataBits = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.txtServerIP = new System.Windows.Forms.TextBox();
-            this.txtServerPort = new System.Windows.Forms.TextBox();
-            this.btnServerStart = new System.Windows.Forms.Button();
-            this.btnServerStop = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.btnServerStop = new System.Windows.Forms.Button();
+            this.btnServerStart = new System.Windows.Forms.Button();
+            this.txtServerPort = new System.Windows.Forms.TextBox();
+            this.txtServerIP = new System.Windows.Forms.TextBox();
+            this.cbSendEncoding = new System.Windows.Forms.ComboBox();
+            this.cbReceiveEncoding = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
@@ -136,7 +140,7 @@
             this.txtContent.Location = new System.Drawing.Point(50, 50);
             this.txtContent.Multiline = true;
             this.txtContent.Name = "txtContent";
-            this.txtContent.Size = new System.Drawing.Size(264, 133);
+            this.txtContent.Size = new System.Drawing.Size(264, 102);
             this.txtContent.TabIndex = 3;
             // 
             // dataGridView1
@@ -648,39 +652,14 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "手机模拟串口助手 - 服务器端";
             // 
-            // txtServerIP
+            // label14
             // 
-            this.txtServerIP.Location = new System.Drawing.Point(78, 26);
-            this.txtServerIP.Name = "txtServerIP";
-            this.txtServerIP.Size = new System.Drawing.Size(114, 22);
-            this.txtServerIP.TabIndex = 9;
-            this.txtServerIP.Text = "127.0.0.1";
-            // 
-            // txtServerPort
-            // 
-            this.txtServerPort.Location = new System.Drawing.Point(78, 54);
-            this.txtServerPort.Name = "txtServerPort";
-            this.txtServerPort.Size = new System.Drawing.Size(114, 22);
-            this.txtServerPort.TabIndex = 14;
-            this.txtServerPort.Text = "48001";
-            // 
-            // btnServerStart
-            // 
-            this.btnServerStart.Location = new System.Drawing.Point(16, 94);
-            this.btnServerStart.Name = "btnServerStart";
-            this.btnServerStart.Size = new System.Drawing.Size(77, 25);
-            this.btnServerStart.TabIndex = 24;
-            this.btnServerStart.Text = "开始";
-            this.btnServerStart.UseVisualStyleBackColor = true;
-            // 
-            // btnServerStop
-            // 
-            this.btnServerStop.Location = new System.Drawing.Point(115, 94);
-            this.btnServerStop.Name = "btnServerStop";
-            this.btnServerStop.Size = new System.Drawing.Size(77, 25);
-            this.btnServerStop.TabIndex = 25;
-            this.btnServerStop.Text = "停止";
-            this.btnServerStop.UseVisualStyleBackColor = true;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(23, 58);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(35, 14);
+            this.label14.TabIndex = 27;
+            this.label14.Text = "端口";
             // 
             // label13
             // 
@@ -691,20 +670,85 @@
             this.label13.TabIndex = 26;
             this.label13.Text = "IP";
             // 
-            // label14
+            // btnServerStop
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(23, 58);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(35, 14);
-            this.label14.TabIndex = 27;
-            this.label14.Text = "端口";
+            this.btnServerStop.Location = new System.Drawing.Point(115, 94);
+            this.btnServerStop.Name = "btnServerStop";
+            this.btnServerStop.Size = new System.Drawing.Size(77, 25);
+            this.btnServerStop.TabIndex = 25;
+            this.btnServerStop.Text = "停止";
+            this.btnServerStop.UseVisualStyleBackColor = true;
+            // 
+            // btnServerStart
+            // 
+            this.btnServerStart.Location = new System.Drawing.Point(16, 94);
+            this.btnServerStart.Name = "btnServerStart";
+            this.btnServerStart.Size = new System.Drawing.Size(77, 25);
+            this.btnServerStart.TabIndex = 24;
+            this.btnServerStart.Text = "开始";
+            this.btnServerStart.UseVisualStyleBackColor = true;
+            // 
+            // txtServerPort
+            // 
+            this.txtServerPort.Location = new System.Drawing.Point(78, 54);
+            this.txtServerPort.Name = "txtServerPort";
+            this.txtServerPort.Size = new System.Drawing.Size(114, 22);
+            this.txtServerPort.TabIndex = 14;
+            this.txtServerPort.Text = "48001";
+            // 
+            // txtServerIP
+            // 
+            this.txtServerIP.Location = new System.Drawing.Point(78, 26);
+            this.txtServerIP.Name = "txtServerIP";
+            this.txtServerIP.Size = new System.Drawing.Size(114, 22);
+            this.txtServerIP.TabIndex = 9;
+            this.txtServerIP.Text = "127.0.0.1";
+            // 
+            // cbSendEncoding
+            // 
+            this.cbSendEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSendEncoding.FormattingEnabled = true;
+            this.cbSendEncoding.Location = new System.Drawing.Point(52, 160);
+            this.cbSendEncoding.Name = "cbSendEncoding";
+            this.cbSendEncoding.Size = new System.Drawing.Size(102, 21);
+            this.cbSendEncoding.TabIndex = 25;
+            // 
+            // cbReceiveEncoding
+            // 
+            this.cbReceiveEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbReceiveEncoding.FormattingEnabled = true;
+            this.cbReceiveEncoding.Location = new System.Drawing.Point(212, 160);
+            this.cbReceiveEncoding.Name = "cbReceiveEncoding";
+            this.cbReceiveEncoding.Size = new System.Drawing.Size(102, 21);
+            this.cbReceiveEncoding.TabIndex = 26;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(172, 164);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(35, 14);
+            this.label15.TabIndex = 27;
+            this.label15.Text = "接收";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(12, 164);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(35, 14);
+            this.label16.TabIndex = 28;
+            this.label16.Text = "发送";
             // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 609);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.cbReceiveEncoding);
+            this.Controls.Add(this.cbSendEncoding);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.label8);
@@ -808,5 +852,9 @@
         private System.Windows.Forms.Button btnServerStart;
         private System.Windows.Forms.TextBox txtServerPort;
         private System.Windows.Forms.TextBox txtServerIP;
+        private System.Windows.Forms.ComboBox cbSendEncoding;
+        private System.Windows.Forms.ComboBox cbReceiveEncoding;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
     }
 }

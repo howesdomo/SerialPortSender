@@ -83,6 +83,13 @@ namespace SerialPortSender
             this.cbStopBits.DisplayMember = "DisplayName";
             this.Default_StopBits = stopBitsList.First(i => i.Value == System.IO.Ports.StopBits.One);
             this.cbStopBits.SelectedItem = this.Default_StopBits;
+
+
+            this.cbSendEncoding.DataSource = mEncodingList;
+            this.cbSendEncoding.DisplayMember = "BodyName";
+
+            this.cbReceiveEncoding.DataSource = mEncodingList2;
+            this.cbReceiveEncoding.DisplayMember = "BodyName";
         }
 
         private void initEvent()
@@ -128,6 +135,9 @@ namespace SerialPortSender
 
             this.btnServerStart.Click += BtnServerStart_Click;
             this.btnServerStop.Click += BtnServerStop_Click;
+
+            this.cbReceiveEncoding.SelectedIndexChanged += cbReceiveEncoding_SelectedIndexChanged;
+            this.cbSendEncoding.SelectedIndexChanged += cbSendEncoding_SelectedIndexChanged;
         }
 
         #region 设置 接收等待时间(毫秒)
@@ -436,8 +446,8 @@ namespace SerialPortSender
                 }
 
                 string sendContent = this.getSendContent(this.txtContent.Text);
-                serialPort1.Write(sendContent);
-
+                byte[] toWrite = mSendEncoding.GetBytes(sendContent);
+                serialPort1.Write(toWrite, 0, toWrite.Length);
 
                 DataModel t = new DataModel();
                 t.No = this.DataList.Count + 1;
@@ -520,7 +530,8 @@ namespace SerialPortSender
                 int length = serialPort1.BytesToRead;
                 byte[] buf = new byte[length];
                 serialPort1.Read(buf, 0, length);
-                barcode = System.Text.Encoding.Default.GetString(buf, 0, buf.Length);
+
+                barcode = mReceiveEncoding.GetString(buf, 0, buf.Length);
 
                 DataModel t = new DataModel();
                 t.No = this.DataList.Count + 1;
@@ -770,6 +781,37 @@ namespace SerialPortSender
         }
 
 
+        #region Encoding 发送接收编码
+
+        List<Encoding> mEncodingList = new List<Encoding>()
+        {
+            Encoding.Default,
+            Encoding.ASCII,
+            Encoding.UTF8,
+            Encoding.Unicode
+        };
+
+        List<Encoding> mEncodingList2 = new List<Encoding>()
+        {
+            Encoding.Default,
+            Encoding.ASCII,
+            Encoding.UTF8,
+            Encoding.Unicode
+        };
+
+        private Encoding mSendEncoding { get; set; }
+        private void cbSendEncoding_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mSendEncoding = cbSendEncoding.SelectedItem as Encoding;
+        }
+
+        private Encoding mReceiveEncoding { get; set; }
+        private void cbReceiveEncoding_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mReceiveEncoding = cbReceiveEncoding.SelectedItem as Encoding;
+        }
+
+        #endregion
 
 
 
