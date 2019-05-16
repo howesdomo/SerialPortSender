@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Reflection;
 using System.Net;
+using System.Net.Sockets;
 
 namespace SerialPortSender
 {
@@ -780,7 +781,6 @@ namespace SerialPortSender
             this.cbStopBits.SelectedItem = this.Default_StopBits;
         }
 
-
         #region Encoding 发送接收编码
 
         List<Encoding> mEncodingList = new List<Encoding>()
@@ -813,68 +813,63 @@ namespace SerialPortSender
 
         #endregion
 
-
-
         #region Socket Server
 
-        //定义Socket对象
-        System.Net.Sockets.Socket mServerSocket { get; set; }
-        //定义监听线程
-        Thread mListenThread { get; set; }
-        //定义接收客户端数据线程
-        Thread mThreadReceive { get; set; }
-        //定义双方通信
-        System.Net.Sockets.Socket mSocket { get; set; }
+        // 定义Socket对象
+        System.Net.Sockets.TcpListener mTcpListener { get; set; }
+
+        // 定义监听线程
+        System.Threading.Tasks.Task taskListen { get; set; }
+
+        // 定义接收客户端数据线程
+        System.Threading.Tasks.Task taskReceive { get; set; }
+
+        // 定义双方通信
+        System.Net.Sockets.TcpClient remoteClient { get; set; }
+
+        LinkedList<System.Net.Sockets.TcpClient> remoteClientLinkedList { get; set; } = new LinkedList<System.Net.Sockets.TcpClient>();
 
 
         private void BtnServerStart_Click(object sender, EventArgs e)
         {
-            if (mServerSocket != null || mListenThread != null)
-            {
-                MessageBox.Show("ServerSocket is Connected");
-                return;
-            }
-
-            IPAddress ip = IPAddress.Parse(this.txtServerIP.Text.TrimAdv());
-            mServerSocket = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Tcp);
+            this.btnServerStart.Enabled = false;
             try
             {
-                //绑定ip和端口
-                mServerSocket.Bind(new IPEndPoint(ip, Convert.ToInt32(this.txtServerPort.Text.TrimAdv())));
-                //设置最多10个排队连接请求
-                mServerSocket.Listen(10);
-                //开启线程循环监听
-                mListenThread = new Thread(ListenClientConnect);
-                mListenThread.Start();
+                remoteClientLinkedList.Clear();
+
+                IPAddress ip = IPAddress.Parse(this.txtServerIP.Text.Trim());
+                int port = Convert.ToInt32(this.txtServerPort.Text.Trim());
+
+                mTcpListener = new System.Net.Sockets.TcpListener(ip, port);
+                mTcpListener.Start();
+
+                string msg = "Server : Start Listening";
+                System.Diagnostics.Debug.WriteLine(msg);
+
+                taskListen = new System.Threading.Tasks.Task(ListenClientConnect);
+                taskListen.Start();
+
+                this.btnServerStop.Enabled = true;
             }
             catch (Exception ex)
             {
-                mServerSocket = null;
-                mListenThread = null;
-
                 MessageBox.Show(ex.GetFullInfo());
+                this.btnServerStart.Enabled = true;
             }
         }
 
         private void BtnServerStop_Click(object sender, EventArgs e)
         {
-            if (mServerSocket == null || mListenThread == null)
-            {
-                MessageBox.Show("ServerSocket is not Connected");
-                return;
-            }
-
+            this.btnServerStop.Enabled = false;
             try
             {
-                //socket关闭
-                mServerSocket.Close();
-                //线程关闭
-                mListenThread.Abort();
-                mThreadReceive.Abort();
+                mTcpListener.Stop();
+                this.btnServerStart.Enabled = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.GetFullInfo());
+                this.btnServerStop.Enabled = true;
             }
         }
 
@@ -884,36 +879,48 @@ namespace SerialPortSender
             while (true)
             {
                 //监听到客户端的连接，获取双方通信socket
-                mSocket = mServerSocket.Accept();
+                System.Net.Sockets.TcpClient remoteClient = mTcpListener.AcceptTcpClient();
+                remoteClientLinkedList.AddLast(remoteClient);
+
+                string msg = "Server : Client Connected! Local:{0} <-- Client:{1}".FormatWith
+                (
+                    remoteClient.Client.LocalEndPoint,
+                    remoteClient.Client.RemoteEndPoint
+                );
+                System.Diagnostics.Debug.WriteLine(msg);
+
                 //创建线程循环接收客户端发送的数据
-                mThreadReceive = new Thread(Receive);
+                taskReceive = new System.Threading.Tasks.Task(() => Receive(remoteClient));
+                taskReceive.ContinueWith((task) =>
+                {
+                    System.Diagnostics.Debug.WriteLine("taskReceive is end");
+                });
+
                 //传入双方通信socket
-                mThreadReceive.Start(mSocket);
+                taskReceive.Start();
             }
         }
 
         //接收客户端数据
-        private void Receive(object socket)
+        private void Receive(TcpClient myClientSocket)
         {
-            try
+            while (true)
             {
-                System.Net.Sockets.Socket myClientSocket = (System.Net.Sockets.Socket)socket;
-                while (true)
+                try
                 {
-                    byte[] buf = new byte[65535];
-                    int r = myClientSocket.Receive(buf);
-                    string str = Encoding.Default.GetString(buf, 0, r);
+                    string str = myClientSocket.Receive(); // 自定义扩展方法
                     this.Invoke(new Action(() =>
                     {
-                        // serialPort1_DataReceived_Part2(str, buf);
                         this.txtContent.Text = str;
                         this.btnScan_Click(this.btnScan, new EventArgs());
                     }));
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.GetFullInfo());
+                catch (Exception ex)
+                {
+                    string msg = "{0}".FormatWith(ex.GetFullInfo());
+                    System.Diagnostics.Debug.WriteLine(msg);
+                    Util.LogUtils.LogAsync(ex.GetFullInfo());
+                }
             }
         }
 
