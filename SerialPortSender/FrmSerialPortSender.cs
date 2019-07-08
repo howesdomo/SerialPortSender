@@ -339,9 +339,9 @@ namespace SerialPortSender
 
         private void Form_Load(object sender, EventArgs e)
         {
-            //获取所有端口
-            var array = System.IO.Ports.SerialPort.GetPortNames();
-            cmbCom.DataSource = array.ToList().OrderBy(i => i).ToArray();
+            // 获取所有串口
+            var array = Util.IO.SerialPortUtil.GetPortNameList();    
+            cmbCom.DataSource = array;
             this.PortUnEnabled();
         }
 
