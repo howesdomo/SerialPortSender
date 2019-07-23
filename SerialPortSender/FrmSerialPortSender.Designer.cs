@@ -96,6 +96,13 @@
             this.cbReceiveEncoding = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.btnDictShow = new System.Windows.Forms.Button();
+            this.btnDictHidden = new System.Windows.Forms.Button();
+            this.dataGridViewDict = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
@@ -103,6 +110,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDict)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOpen
@@ -158,6 +166,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(12, 325);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidth = 45;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(790, 257);
             this.dataGridView1.TabIndex = 4;
@@ -167,6 +176,7 @@
             // 
             this.ColumnNo.DataPropertyName = "No";
             this.ColumnNo.HeaderText = "No.";
+            this.ColumnNo.MinimumWidth = 6;
             this.ColumnNo.Name = "ColumnNo";
             this.ColumnNo.ReadOnly = true;
             this.ColumnNo.Width = 50;
@@ -175,6 +185,7 @@
             // 
             this.Column1.DataPropertyName = "Status";
             this.Column1.HeaderText = "状态";
+            this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             this.Column1.Width = 70;
@@ -183,6 +194,7 @@
             // 
             this.Column3.DataPropertyName = "DateTimeInfo";
             this.Column3.HeaderText = "日期 & 时间";
+            this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
             this.Column3.Width = 180;
@@ -191,6 +203,7 @@
             // 
             this.Column2.DataPropertyName = "Content";
             this.Column2.HeaderText = "内容 ( 发送不含报头&终端 )";
+            this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             this.Column2.Width = 230;
@@ -199,6 +212,7 @@
             // 
             this.hexContent.DataPropertyName = "ContentByHex";
             this.hexContent.HeaderText = "Hex ( 包含报头终端 )";
+            this.hexContent.MinimumWidth = 6;
             this.hexContent.Name = "hexContent";
             this.hexContent.ReadOnly = true;
             this.hexContent.Width = 200;
@@ -515,7 +529,7 @@
             // cbExportLog
             // 
             this.cbExportLog.AutoSize = true;
-            this.cbExportLog.Location = new System.Drawing.Point(447, 301);
+            this.cbExportLog.Location = new System.Drawing.Point(447, 259);
             this.cbExportLog.Name = "cbExportLog";
             this.cbExportLog.Size = new System.Drawing.Size(110, 18);
             this.cbExportLog.TabIndex = 18;
@@ -524,7 +538,7 @@
             // 
             // txtThreadSleep_BeforeReadExsiting
             // 
-            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(443, 259);
+            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(443, 224);
             this.txtThreadSleep_BeforeReadExsiting.Name = "txtThreadSleep_BeforeReadExsiting";
             this.txtThreadSleep_BeforeReadExsiting.Size = new System.Drawing.Size(114, 22);
             this.txtThreadSleep_BeforeReadExsiting.TabIndex = 19;
@@ -532,7 +546,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(440, 224);
+            this.label8.Location = new System.Drawing.Point(440, 202);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(133, 14);
             this.label8.TabIndex = 20;
@@ -740,11 +754,88 @@
             this.label16.TabIndex = 28;
             this.label16.Text = "发送";
             // 
+            // btnDictShow
+            // 
+            this.btnDictShow.Location = new System.Drawing.Point(439, 288);
+            this.btnDictShow.Name = "btnDictShow";
+            this.btnDictShow.Size = new System.Drawing.Size(60, 25);
+            this.btnDictShow.TabIndex = 28;
+            this.btnDictShow.Text = "显示";
+            this.btnDictShow.UseVisualStyleBackColor = true;
+            // 
+            // btnDictHidden
+            // 
+            this.btnDictHidden.Location = new System.Drawing.Point(509, 287);
+            this.btnDictHidden.Name = "btnDictHidden";
+            this.btnDictHidden.Size = new System.Drawing.Size(60, 25);
+            this.btnDictHidden.TabIndex = 29;
+            this.btnDictHidden.Text = "隐藏";
+            this.btnDictHidden.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewDict
+            // 
+            this.dataGridViewDict.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewDict.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewDict.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5});
+            this.dataGridViewDict.Location = new System.Drawing.Point(12, 325);
+            this.dataGridViewDict.Name = "dataGridViewDict";
+            this.dataGridViewDict.ReadOnly = true;
+            this.dataGridViewDict.RowHeadersWidth = 45;
+            this.dataGridViewDict.RowTemplate.Height = 23;
+            this.dataGridViewDict.Size = new System.Drawing.Size(790, 257);
+            this.dataGridViewDict.TabIndex = 30;
+            this.dataGridViewDict.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "Status";
+            this.dataGridViewTextBoxColumn2.HeaderText = "状态";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 70;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "DateTimeInfo";
+            this.dataGridViewTextBoxColumn3.HeaderText = "日期 & 时间";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 180;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "Content";
+            this.dataGridViewTextBoxColumn4.HeaderText = "内容 ( 发送不含报头&终端 )";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Width = 230;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "ContentByHex";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Hex ( 包含报头终端 )";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.Width = 200;
+            // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 609);
+            this.Controls.Add(this.dataGridViewDict);
+            this.Controls.Add(this.btnDictHidden);
+            this.Controls.Add(this.btnDictShow);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.cbReceiveEncoding);
@@ -783,6 +874,7 @@
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDict)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -856,5 +948,12 @@
         private System.Windows.Forms.ComboBox cbReceiveEncoding;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button btnDictShow;
+        private System.Windows.Forms.Button btnDictHidden;
+        private System.Windows.Forms.DataGridView dataGridViewDict;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
     }
 }

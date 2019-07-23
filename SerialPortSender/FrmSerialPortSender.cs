@@ -35,6 +35,8 @@ namespace SerialPortSender
         /// </summary>
         public List<DataModel> DataList = new List<DataModel>();
 
+        public Dictionary<string, DataModel> mDict = new Dictionary<string, DataModel>();
+
         private BackgroundWorker bgWoker = new BackgroundWorker();
 
         public FrmSerialPortSender()
@@ -139,6 +141,16 @@ namespace SerialPortSender
 
             this.cbReceiveEncoding.SelectedIndexChanged += cbReceiveEncoding_SelectedIndexChanged;
             this.cbSendEncoding.SelectedIndexChanged += cbSendEncoding_SelectedIndexChanged;
+
+            this.btnDictShow.Click += (s, e) => 
+            {
+                dataGridViewDict.Visible = true;
+            };
+
+            this.btnDictHidden.Click += (s, e) =>
+            {
+                dataGridViewDict.Visible = false;
+            };
         }
 
         #region 设置 接收等待时间(毫秒)
@@ -462,6 +474,26 @@ namespace SerialPortSender
                 templ.AddRange(this.DataList);
                 this.DataList = templ;
                 dataGridView1.DataSource = DataList;
+
+                string key = txtContent.Text;
+                DataModel dictToAdd = null;
+                if (mDict.TryGetValue(key, out dictToAdd) == true)
+                {
+                    dictToAdd.DateTimeInfo = t.DateTimeInfo;
+                }
+                else
+                {
+                    dictToAdd = t;
+                    mDict.Add(key, dictToAdd);
+
+                    List<DataModel> dictToList = new List<DataModel>();
+                    foreach (string itemKey in mDict.Keys)
+                    {
+                        dictToList.Add(mDict.GetValue(itemKey));
+                    }
+
+                    dataGridViewDict.DataSource = dictToList;
+                }               
 
                 if (cbExportLog.Checked == true)
                 {
