@@ -103,6 +103,7 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
@@ -111,6 +112,7 @@
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDict)).BeginInit();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpen
@@ -529,7 +531,7 @@
             // cbExportLog
             // 
             this.cbExportLog.AutoSize = true;
-            this.cbExportLog.Location = new System.Drawing.Point(447, 259);
+            this.cbExportLog.Location = new System.Drawing.Point(446, 241);
             this.cbExportLog.Name = "cbExportLog";
             this.cbExportLog.Size = new System.Drawing.Size(110, 18);
             this.cbExportLog.TabIndex = 18;
@@ -538,15 +540,15 @@
             // 
             // txtThreadSleep_BeforeReadExsiting
             // 
-            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(443, 224);
+            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(443, 213);
             this.txtThreadSleep_BeforeReadExsiting.Name = "txtThreadSleep_BeforeReadExsiting";
-            this.txtThreadSleep_BeforeReadExsiting.Size = new System.Drawing.Size(114, 22);
+            this.txtThreadSleep_BeforeReadExsiting.Size = new System.Drawing.Size(124, 22);
             this.txtThreadSleep_BeforeReadExsiting.TabIndex = 19;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(440, 202);
+            this.label8.Location = new System.Drawing.Point(440, 196);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(133, 14);
             this.label8.TabIndex = 20;
@@ -756,7 +758,7 @@
             // 
             // btnDictShow
             // 
-            this.btnDictShow.Location = new System.Drawing.Point(439, 288);
+            this.btnDictShow.Location = new System.Drawing.Point(9, 22);
             this.btnDictShow.Name = "btnDictShow";
             this.btnDictShow.Size = new System.Drawing.Size(60, 25);
             this.btnDictShow.TabIndex = 28;
@@ -765,7 +767,7 @@
             // 
             // btnDictHidden
             // 
-            this.btnDictHidden.Location = new System.Drawing.Point(509, 287);
+            this.btnDictHidden.Location = new System.Drawing.Point(77, 22);
             this.btnDictHidden.Name = "btnDictHidden";
             this.btnDictHidden.Size = new System.Drawing.Size(60, 25);
             this.btnDictHidden.TabIndex = 29;
@@ -791,6 +793,7 @@
             this.dataGridViewDict.Size = new System.Drawing.Size(790, 257);
             this.dataGridViewDict.TabIndex = 30;
             this.dataGridViewDict.Visible = false;
+            this.dataGridViewDict.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridViewDict_CellMouseDoubleClick);
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -828,14 +831,24 @@
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.Width = 200;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.btnDictShow);
+            this.groupBox6.Controls.Add(this.btnDictHidden);
+            this.groupBox6.Location = new System.Drawing.Point(430, 266);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(143, 53);
+            this.groupBox6.TabIndex = 32;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "去重发送内容列表";
+            // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 609);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.dataGridViewDict);
-            this.Controls.Add(this.btnDictHidden);
-            this.Controls.Add(this.btnDictShow);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.cbReceiveEncoding);
@@ -875,6 +888,7 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDict)).EndInit();
+            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -955,5 +969,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.GroupBox groupBox6;
     }
 }

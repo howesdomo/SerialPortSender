@@ -360,6 +360,7 @@ namespace SerialPortSender
         private void PortEnabled()
         {
             this.btnOpen.Enabled = false;
+            this.cmbCom.Enabled = false;
             this.txtThreadSleep_BeforeReadExsiting.Enabled = false;
 
             this.btnclose.Enabled = true;
@@ -381,6 +382,7 @@ namespace SerialPortSender
         private void PortUnEnabled()
         {
             this.btnOpen.Enabled = true;
+            this.cmbCom.Enabled = true;
             this.txtThreadSleep_BeforeReadExsiting.Enabled = true;
 
             this.btnclose.Enabled = false;
@@ -799,6 +801,15 @@ namespace SerialPortSender
             this.txtContent.Text = content;
         }
 
+        private void DataGridViewDict_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var rowCollection = this.dataGridViewDict.Rows[e.RowIndex];
+            var cell = rowCollection.Cells[e.ColumnIndex];
+            string content = cell.Value.ToString();
+
+            this.txtContent.Text = content;
+        }
+
 
         public Util.IO.BaudRate Default_BaudRate { get; set; }
         public Util.IO.DataBits Default_DataBits { get; set; }
@@ -957,6 +968,7 @@ namespace SerialPortSender
         }
 
         #endregion
+
 
     }
 
