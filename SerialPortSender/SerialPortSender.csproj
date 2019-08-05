@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WinNetworkHelper.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="DataModel.cs" />
     <Compile Include="FrmSerialPortSender.cs">

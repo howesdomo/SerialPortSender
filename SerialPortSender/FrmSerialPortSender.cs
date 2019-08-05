@@ -93,6 +93,13 @@ namespace SerialPortSender
 
             this.cbReceiveEncoding.DataSource = mEncodingList2;
             this.cbReceiveEncoding.DisplayMember = "BodyName";
+
+            mServerIPList = Howe.Helper.WinNetworkHelper.GetAllDevice();
+            cmbServerIP.DataSource = mServerIPList;
+            if (mServerIPList.Count > 1) // 因为肯定有一项刷新, 故此处要大于 1
+            {
+                cmbServerIP.SelectedItem = mServerIPList[0];
+            }
         }
 
         private void initEvent()
@@ -142,7 +149,7 @@ namespace SerialPortSender
             this.cbReceiveEncoding.SelectedIndexChanged += cbReceiveEncoding_SelectedIndexChanged;
             this.cbSendEncoding.SelectedIndexChanged += cbSendEncoding_SelectedIndexChanged;
 
-            this.btnDictShow.Click += (s, e) => 
+            this.btnDictShow.Click += (s, e) =>
             {
                 dataGridViewDict.Visible = true;
             };
@@ -352,7 +359,7 @@ namespace SerialPortSender
         private void Form_Load(object sender, EventArgs e)
         {
             // 获取所有串口
-            var array = Util.IO.SerialPortUtil.GetPortNameList();    
+            var array = Util.IO.SerialPortUtil.GetPortNameList();
             cmbCom.DataSource = array;
             this.PortUnEnabled();
         }
@@ -495,7 +502,7 @@ namespace SerialPortSender
                     }
 
                     dataGridViewDict.DataSource = dictToList;
-                }               
+                }
 
                 if (cbExportLog.Checked == true)
                 {
@@ -964,6 +971,37 @@ namespace SerialPortSender
                     System.Diagnostics.Debug.WriteLine(msg);
                     Util.LogUtils.LogAsync(ex.GetFullInfo());
                 }
+            }
+        }
+
+        /// <summary>
+        /// 本机 IP 列表
+        /// </summary>
+        List<Howe.Helper.NetworkInterfaceAdv> mServerIPList = Howe.Helper.WinNetworkHelper.GetAllDevice();
+
+        /// <summary>
+        /// 选择本机IP列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmbServerIP_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.cmbServerIP.SelectedIndex < 0)
+            {
+                return;
+            }
+
+            int index = cmbServerIP.SelectedIndex;
+
+            if (mServerIPList[index].DisplayName == Howe.Helper.NetworkInterfaceAdv.RefleshInfo)
+            {
+                mServerIPList = Howe.Helper.WinNetworkHelper.GetAllDevice();
+                cmbServerIP.DataSource = mServerIPList;
+                this.txtServerIP.Text = string.Empty;
+            }
+            else
+            {
+                this.txtServerIP.Text = mServerIPList[index].IPAddress.ToString();
             }
         }
 

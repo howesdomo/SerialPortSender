@@ -92,6 +92,7 @@
             this.btnServerStart = new System.Windows.Forms.Button();
             this.txtServerPort = new System.Windows.Forms.TextBox();
             this.txtServerIP = new System.Windows.Forms.TextBox();
+            this.cmbServerIP = new System.Windows.Forms.ComboBox();
             this.cbSendEncoding = new System.Windows.Forms.ComboBox();
             this.cbReceiveEncoding = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -661,6 +662,7 @@
             this.groupBox5.Controls.Add(this.btnServerStart);
             this.groupBox5.Controls.Add(this.txtServerPort);
             this.groupBox5.Controls.Add(this.txtServerIP);
+            this.groupBox5.Controls.Add(this.cmbServerIP);
             this.groupBox5.Location = new System.Drawing.Point(579, 189);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(220, 130);
@@ -719,6 +721,18 @@
             this.txtServerIP.Size = new System.Drawing.Size(114, 22);
             this.txtServerIP.TabIndex = 9;
             this.txtServerIP.Text = "127.0.0.1";
+            // 
+            // cmbServerIP
+            // 
+            this.cmbServerIP.DisplayMember = "DisplayName";
+            this.cmbServerIP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbServerIP.DropDownWidth = 200;
+            this.cmbServerIP.FormattingEnabled = true;
+            this.cmbServerIP.Location = new System.Drawing.Point(79, 27);
+            this.cmbServerIP.Name = "cmbServerIP";
+            this.cmbServerIP.Size = new System.Drawing.Size(135, 21);
+            this.cmbServerIP.TabIndex = 28;
+            this.cmbServerIP.SelectedIndexChanged += new System.EventHandler(this.cmbServerIP_SelectedIndexChanged);
             // 
             // cbSendEncoding
             // 
@@ -970,5 +984,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.ComboBox cmbServerIP;
     }
 }
