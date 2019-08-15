@@ -668,7 +668,7 @@
             this.groupBox5.Size = new System.Drawing.Size(220, 130);
             this.groupBox5.TabIndex = 23;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "手机模拟串口助手 - 服务器端";
+            this.groupBox5.Text = "手机模拟扫描枪 - 服务器端";
             // 
             // label14
             // 
@@ -807,7 +807,7 @@
             this.dataGridViewDict.Size = new System.Drawing.Size(790, 257);
             this.dataGridViewDict.TabIndex = 30;
             this.dataGridViewDict.Visible = false;
-            this.dataGridViewDict.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridViewDict_CellMouseDoubleClick);
+            this.dataGridViewDict.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewDict_CellMouseDoubleClick);
             // 
             // dataGridViewTextBoxColumn2
             // 

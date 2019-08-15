@@ -20,11 +20,6 @@ namespace SerialPortSender
         /// </summary>
         private static bool SendContinue = false;
 
-        ///// <summary>
-        ///// 发送以回车符结束
-        ///// </summary>
-        //private static bool SendWithEnter = false;
-
         /// <summary>
         /// 发送后自增长
         /// </summary>
@@ -35,6 +30,9 @@ namespace SerialPortSender
         /// </summary>
         public List<DataModel> DataList = new List<DataModel>();
 
+        /// <summary>
+        /// 去除重复的发送数据List
+        /// </summary>
         public Dictionary<string, DataModel> mDict = new Dictionary<string, DataModel>();
 
         private BackgroundWorker bgWoker = new BackgroundWorker();
@@ -737,7 +735,7 @@ namespace SerialPortSender
                 r.Value = string.Format("{0}{1}", tmp1, tmp2);
                 r.DisplayName = "CL+LF";
                 r.ASCIIString = r.Value.ToString();
-                r.HexString = "1B";
+                r.HexString = "OD OA";
             }
             else if (this.rbReportEnd_UserSetting.Checked)
             {
@@ -801,6 +799,11 @@ namespace SerialPortSender
         /// <param name="e"></param>
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
             var rowCollection = this.dataGridView1.Rows[e.RowIndex];
             var cell = rowCollection.Cells[e.ColumnIndex];
             string content = cell.Value.ToString();
@@ -808,8 +811,13 @@ namespace SerialPortSender
             this.txtContent.Text = content;
         }
 
-        private void DataGridViewDict_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dataGridViewDict_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
             var rowCollection = this.dataGridViewDict.Rows[e.RowIndex];
             var cell = rowCollection.Cells[e.ColumnIndex];
             string content = cell.Value.ToString();
@@ -900,6 +908,9 @@ namespace SerialPortSender
                 taskListen.Start();
 
                 this.btnServerStop.Enabled = true;
+                this.txtServerIP.Enabled = false;
+                this.cmbServerIP.Enabled = false;
+                this.txtServerPort.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -915,6 +926,10 @@ namespace SerialPortSender
             {
                 mTcpListener.Stop();
                 this.btnServerStart.Enabled = true;
+
+                this.txtServerIP.Enabled = true;
+                this.cmbServerIP.Enabled = true;
+                this.txtServerPort.Enabled = true;
             }
             catch (Exception ex)
             {
