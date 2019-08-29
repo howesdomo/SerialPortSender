@@ -690,6 +690,7 @@
             // 
             // btnServerStop
             // 
+            this.btnServerStop.Enabled = false;
             this.btnServerStop.Location = new System.Drawing.Point(115, 94);
             this.btnServerStop.Name = "btnServerStop";
             this.btnServerStop.Size = new System.Drawing.Size(77, 25);

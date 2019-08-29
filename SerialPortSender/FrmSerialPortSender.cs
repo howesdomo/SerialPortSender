@@ -543,8 +543,11 @@ namespace SerialPortSender
 
         private void btnEmpty_Click(object sender, EventArgs e)
         {
-            DataList = new List<DataModel>();
-            dataGridView1.DataSource = DataList;
+            //DataList = new List<DataModel>();
+            //dataGridView1.DataSource = DataList;
+
+            this.txtContent.Text = string.Empty;            
+            this.txtContent.Focus();
         }
 
         private const int cThreadSleep_BeforeRead = 80;
