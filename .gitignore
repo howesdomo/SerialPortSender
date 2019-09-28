@@ -169,3 +169,5 @@ $RECYCLE.BIN/
 /.vs/SerialPortSender.Solution/v15/Server/sqlite3/storage.ide-shm
 /.vs/SerialPortSender.Solution/v15/Server/sqlite3/storage.ide-wal
 /.vs/SerialPortSender.Solution/v16/Server/sqlite3
+/.vs
+/packages
