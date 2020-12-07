@@ -1025,8 +1025,107 @@ namespace SerialPortSender
 
         #endregion
 
+        #region 以 Socket 的方式连接到扫描头服务端
+        
+        TcpClient mTcpClient { get; set; }
 
+        // 创建接收消息的线程
+        System.Threading.Tasks.Task mtaskReceive;
+
+        private void btnClientStart_Click(object sender, EventArgs e)
+        {
+            this.btnClientStart.Enabled = false;
+
+            try
+            {
+                IPAddress ip = IPAddress.Parse(this.txtClientIP.Text.Trim());
+                int port = Convert.ToInt32(this.txtClientPort.Text.Trim());
+
+                // 连接服务端
+                mTcpClient = new TcpClient();
+                mTcpClient.Connect(ip, port); // 开始侦听
+
+                string msg = "Client : Server Connected! Local:{0} --> Server:{1}".FormatWith
+                (
+                    mTcpClient.Client.LocalEndPoint,
+                    mTcpClient.Client.RemoteEndPoint
+                );
+                System.Diagnostics.Debug.WriteLine(msg);
+
+
+                //开启线程不停的接收服务端发送的数据
+                mtaskReceive = new System.Threading.Tasks.Task(() => receive());
+                mtaskReceive.ContinueWith((task) =>
+                {
+                    System.Diagnostics.Debug.WriteLine("client taskReceive finish");
+                });
+
+                mtaskReceive.Start();
+
+                this.btnClientStop.Enabled = true;                
+            }
+            catch (Exception ex)
+            {
+                // obj 
+                mTcpClient = null;
+                taskReceive = null;
+
+                //
+                MessageBox.Show(ex.GetFullInfo());
+                this.btnClientStart.Enabled = true;
+            }
+        }
+
+        //接收服务端消息的线程方法
+        private void receive()
+        {
+            while (true)
+            {
+                try
+                {
+                    string str = mTcpClient.StandardReceive(); // 标准接收方式
+                    this.Invoke(new Action(() =>
+                    {
+                        this.txtContent.Text = str;
+                        this.btnScan_Click(this.btnScan, new EventArgs());
+                    }));
+                }
+                catch (System.IO.IOException ioException)
+                {
+                    if (mTcpClient.Connected == false)
+                    {
+                        break;
+                    }
+
+                    string msg = "{0}".FormatWith(ioException.GetFullInfo());
+                    System.Diagnostics.Debug.WriteLine(msg);
+
+                    throw ioException;
+                }
+                catch (Exception ex)
+                {
+                    string msg = "{0}".FormatWith(ex.GetFullInfo());
+                    System.Diagnostics.Debug.WriteLine(msg);
+                }
+            }
+        }
+
+        private void btnClientStop_Click(object sender, EventArgs e)
+        {
+            this.btnClientStop.Enabled = false;
+            try
+            {
+                mTcpClient.Client.Close();
+
+                this.btnClientStart.Enabled = true;               
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.GetFullInfo());
+                this.btnClientStop.Enabled = true;
+            }
+        }
+
+        #endregion
     }
-
-
 }

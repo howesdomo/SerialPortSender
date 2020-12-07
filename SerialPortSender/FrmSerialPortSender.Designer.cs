@@ -85,7 +85,6 @@
             this.cbStopBits = new System.Windows.Forms.ComboBox();
             this.cbParity = new System.Windows.Forms.ComboBox();
             this.cbDataBits = new System.Windows.Forms.ComboBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.btnServerStop = new System.Windows.Forms.Button();
@@ -105,15 +104,26 @@
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabClient = new System.Windows.Forms.TabPage();
+            this.tabServer = new System.Windows.Forms.TabPage();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.btnClientStop = new System.Windows.Forms.Button();
+            this.txtClientIP = new System.Windows.Forms.TextBox();
+            this.btnClientStart = new System.Windows.Forms.Button();
+            this.txtClientPort = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDict)).BeginInit();
             this.groupBox6.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabClient.SuspendLayout();
+            this.tabServer.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpen
@@ -171,7 +181,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 45;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(790, 257);
+            this.dataGridView1.Size = new System.Drawing.Size(785, 257);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
             // 
@@ -323,7 +333,7 @@
             this.statusStrip_Status.Location = new System.Drawing.Point(0, 587);
             this.statusStrip_Status.Name = "statusStrip_Status";
             this.statusStrip_Status.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip_Status.Size = new System.Drawing.Size(811, 22);
+            this.statusStrip_Status.Size = new System.Drawing.Size(806, 22);
             this.statusStrip_Status.TabIndex = 15;
             this.statusStrip_Status.Text = "statusStrip1";
             // 
@@ -435,6 +445,7 @@
             this.groupBox3.Controls.Add(this.txtReportEnd_ASCII);
             this.groupBox3.Controls.Add(this.rbReportEnd_CR_LF);
             this.groupBox3.Controls.Add(this.rbReportEnd_CR);
+            this.groupBox3.Controls.Add(this.rbReportEnd_UserSetting);
             this.groupBox3.Location = new System.Drawing.Point(224, 189);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 130);
@@ -445,7 +456,7 @@
             // rbReportEnd_None
             // 
             this.rbReportEnd_None.AutoSize = true;
-            this.rbReportEnd_None.Location = new System.Drawing.Point(101, 46);
+            this.rbReportEnd_None.Location = new System.Drawing.Point(80, 46);
             this.rbReportEnd_None.Name = "rbReportEnd_None";
             this.rbReportEnd_None.Size = new System.Drawing.Size(39, 18);
             this.rbReportEnd_None.TabIndex = 12;
@@ -521,7 +532,7 @@
             // rbReportEnd_UserSetting
             // 
             this.rbReportEnd_UserSetting.AutoSize = true;
-            this.rbReportEnd_UserSetting.Location = new System.Drawing.Point(370, 236);
+            this.rbReportEnd_UserSetting.Location = new System.Drawing.Point(129, 47);
             this.rbReportEnd_UserSetting.Name = "rbReportEnd_UserSetting";
             this.rbReportEnd_UserSetting.Size = new System.Drawing.Size(67, 18);
             this.rbReportEnd_UserSetting.TabIndex = 11;
@@ -654,26 +665,10 @@
             this.cbDataBits.Size = new System.Drawing.Size(87, 21);
             this.cbDataBits.TabIndex = 22;
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.label14);
-            this.groupBox5.Controls.Add(this.label13);
-            this.groupBox5.Controls.Add(this.btnServerStop);
-            this.groupBox5.Controls.Add(this.btnServerStart);
-            this.groupBox5.Controls.Add(this.txtServerPort);
-            this.groupBox5.Controls.Add(this.txtServerIP);
-            this.groupBox5.Controls.Add(this.cmbServerIP);
-            this.groupBox5.Location = new System.Drawing.Point(579, 189);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(220, 130);
-            this.groupBox5.TabIndex = 23;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "手机模拟扫描枪 - 服务器端";
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(23, 58);
+            this.label14.Location = new System.Drawing.Point(13, 37);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(35, 14);
             this.label14.TabIndex = 27;
@@ -682,7 +677,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(23, 30);
+            this.label13.Location = new System.Drawing.Point(13, 9);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(21, 14);
             this.label13.TabIndex = 26;
@@ -691,7 +686,7 @@
             // btnServerStop
             // 
             this.btnServerStop.Enabled = false;
-            this.btnServerStop.Location = new System.Drawing.Point(115, 94);
+            this.btnServerStop.Location = new System.Drawing.Point(105, 68);
             this.btnServerStop.Name = "btnServerStop";
             this.btnServerStop.Size = new System.Drawing.Size(77, 25);
             this.btnServerStop.TabIndex = 25;
@@ -700,7 +695,7 @@
             // 
             // btnServerStart
             // 
-            this.btnServerStart.Location = new System.Drawing.Point(16, 94);
+            this.btnServerStart.Location = new System.Drawing.Point(6, 68);
             this.btnServerStart.Name = "btnServerStart";
             this.btnServerStart.Size = new System.Drawing.Size(77, 25);
             this.btnServerStart.TabIndex = 24;
@@ -709,7 +704,7 @@
             // 
             // txtServerPort
             // 
-            this.txtServerPort.Location = new System.Drawing.Point(78, 54);
+            this.txtServerPort.Location = new System.Drawing.Point(68, 33);
             this.txtServerPort.Name = "txtServerPort";
             this.txtServerPort.Size = new System.Drawing.Size(114, 22);
             this.txtServerPort.TabIndex = 14;
@@ -717,7 +712,7 @@
             // 
             // txtServerIP
             // 
-            this.txtServerIP.Location = new System.Drawing.Point(78, 26);
+            this.txtServerIP.Location = new System.Drawing.Point(68, 5);
             this.txtServerIP.Name = "txtServerIP";
             this.txtServerIP.Size = new System.Drawing.Size(114, 22);
             this.txtServerIP.TabIndex = 9;
@@ -729,7 +724,7 @@
             this.cmbServerIP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbServerIP.DropDownWidth = 200;
             this.cmbServerIP.FormattingEnabled = true;
-            this.cmbServerIP.Location = new System.Drawing.Point(79, 27);
+            this.cmbServerIP.Location = new System.Drawing.Point(69, 6);
             this.cmbServerIP.Name = "cmbServerIP";
             this.cmbServerIP.Size = new System.Drawing.Size(135, 21);
             this.cmbServerIP.TabIndex = 28;
@@ -805,7 +800,7 @@
             this.dataGridViewDict.ReadOnly = true;
             this.dataGridViewDict.RowHeadersWidth = 45;
             this.dataGridViewDict.RowTemplate.Height = 23;
-            this.dataGridViewDict.Size = new System.Drawing.Size(790, 257);
+            this.dataGridViewDict.Size = new System.Drawing.Size(785, 257);
             this.dataGridViewDict.TabIndex = 30;
             this.dataGridViewDict.Visible = false;
             this.dataGridViewDict.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewDict_CellMouseDoubleClick);
@@ -857,21 +852,116 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "去重发送内容列表";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabClient);
+            this.tabControl1.Controls.Add(this.tabServer);
+            this.tabControl1.Location = new System.Drawing.Point(579, 189);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(220, 130);
+            this.tabControl1.TabIndex = 33;
+            // 
+            // tabClient
+            // 
+            this.tabClient.BackColor = System.Drawing.SystemColors.Control;
+            this.tabClient.Controls.Add(this.label17);
+            this.tabClient.Controls.Add(this.label18);
+            this.tabClient.Controls.Add(this.btnClientStop);
+            this.tabClient.Controls.Add(this.txtClientIP);
+            this.tabClient.Controls.Add(this.btnClientStart);
+            this.tabClient.Controls.Add(this.txtClientPort);
+            this.tabClient.Location = new System.Drawing.Point(4, 23);
+            this.tabClient.Name = "tabClient";
+            this.tabClient.Padding = new System.Windows.Forms.Padding(3);
+            this.tabClient.Size = new System.Drawing.Size(212, 103);
+            this.tabClient.TabIndex = 0;
+            this.tabClient.Text = "Client";
+            // 
+            // tabServer
+            // 
+            this.tabServer.BackColor = System.Drawing.SystemColors.Control;
+            this.tabServer.Controls.Add(this.label14);
+            this.tabServer.Controls.Add(this.label13);
+            this.tabServer.Controls.Add(this.btnServerStop);
+            this.tabServer.Controls.Add(this.txtServerIP);
+            this.tabServer.Controls.Add(this.btnServerStart);
+            this.tabServer.Controls.Add(this.txtServerPort);
+            this.tabServer.Controls.Add(this.cmbServerIP);
+            this.tabServer.Location = new System.Drawing.Point(4, 23);
+            this.tabServer.Name = "tabServer";
+            this.tabServer.Padding = new System.Windows.Forms.Padding(3);
+            this.tabServer.Size = new System.Drawing.Size(212, 103);
+            this.tabServer.TabIndex = 1;
+            this.tabServer.Text = "Server(特殊规则)";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(13, 37);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(35, 14);
+            this.label17.TabIndex = 33;
+            this.label17.Text = "端口";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(13, 9);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(21, 14);
+            this.label18.TabIndex = 32;
+            this.label18.Text = "IP";
+            // 
+            // btnClientStop
+            // 
+            this.btnClientStop.Enabled = false;
+            this.btnClientStop.Location = new System.Drawing.Point(105, 68);
+            this.btnClientStop.Name = "btnClientStop";
+            this.btnClientStop.Size = new System.Drawing.Size(77, 25);
+            this.btnClientStop.TabIndex = 31;
+            this.btnClientStop.Text = "停止";
+            this.btnClientStop.UseVisualStyleBackColor = true;
+            this.btnClientStop.Click += new System.EventHandler(this.btnClientStop_Click);
+            // 
+            // txtClientIP
+            // 
+            this.txtClientIP.Location = new System.Drawing.Point(68, 5);
+            this.txtClientIP.Name = "txtClientIP";
+            this.txtClientIP.Size = new System.Drawing.Size(114, 22);
+            this.txtClientIP.TabIndex = 28;
+            // 
+            // btnClientStart
+            // 
+            this.btnClientStart.Location = new System.Drawing.Point(6, 68);
+            this.btnClientStart.Name = "btnClientStart";
+            this.btnClientStart.Size = new System.Drawing.Size(77, 25);
+            this.btnClientStart.TabIndex = 30;
+            this.btnClientStart.Text = "开始";
+            this.btnClientStart.UseVisualStyleBackColor = true;
+            this.btnClientStart.Click += new System.EventHandler(this.btnClientStart_Click);
+            // 
+            // txtClientPort
+            // 
+            this.txtClientPort.Location = new System.Drawing.Point(68, 33);
+            this.txtClientPort.Name = "txtClientPort";
+            this.txtClientPort.Size = new System.Drawing.Size(114, 22);
+            this.txtClientPort.TabIndex = 29;
+            // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(811, 609);
+            this.ClientSize = new System.Drawing.Size(806, 609);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.dataGridViewDict);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.cbReceiveEncoding);
             this.Controls.Add(this.cbSendEncoding);
-            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.rbReportEnd_UserSetting);
             this.Controls.Add(this.txtThreadSleep_BeforeReadExsiting);
             this.Controls.Add(this.cbExportLog);
             this.Controls.Add(this.groupBox3);
@@ -900,10 +990,13 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDict)).EndInit();
             this.groupBox6.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabClient.ResumeLayout(false);
+            this.tabClient.PerformLayout();
+            this.tabServer.ResumeLayout(false);
+            this.tabServer.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -966,7 +1059,6 @@
         private System.Windows.Forms.ComboBox cbParity;
         private System.Windows.Forms.ComboBox cbDataBits;
         private System.Windows.Forms.Button btnResetSerialPort;
-        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button btnServerStop;
@@ -986,5 +1078,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.ComboBox cmbServerIP;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabClient;
+        private System.Windows.Forms.TabPage tabServer;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button btnClientStop;
+        private System.Windows.Forms.TextBox txtClientIP;
+        private System.Windows.Forms.Button btnClientStart;
+        private System.Windows.Forms.TextBox txtClientPort;
     }
 }
