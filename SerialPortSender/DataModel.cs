@@ -20,7 +20,7 @@ namespace SerialPortSender
 
         public string CSVXHeader()
         {
-            return "No.,状态,日期 & 时间, 内容 (发送不含报头&终端),Hex (包含报头终端)\r\n";
+            return "No.,状态,日期时间, 内容 (包含报头与终端信息),Hex (包含报头与终端信息)\r\n";
         }
 
         public string CSVXContent()

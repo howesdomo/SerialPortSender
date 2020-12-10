@@ -35,11 +35,6 @@
             this.btnScan = new System.Windows.Forms.Button();
             this.txtContent = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.ColumnNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.hexContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnEmpty = new System.Windows.Forms.Button();
             this.cmbCom = new System.Windows.Forms.ComboBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
@@ -47,7 +42,6 @@
             this.txtTimeSpan = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtIncreasing = new System.Windows.Forms.TextBox();
             this.ckbIncreasing = new System.Windows.Forms.CheckBox();
@@ -74,7 +68,6 @@
             this.rbReportEnd_UserSetting = new System.Windows.Forms.RadioButton();
             this.cbExportLog = new System.Windows.Forms.CheckBox();
             this.txtThreadSleep_BeforeReadExsiting = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.cbBaudRate = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnResetSerialPort = new System.Windows.Forms.Button();
@@ -106,13 +99,19 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabClient = new System.Windows.Forms.TabPage();
-            this.tabServer = new System.Windows.Forms.TabPage();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.btnClientStop = new System.Windows.Forms.Button();
             this.txtClientIP = new System.Windows.Forms.TextBox();
             this.btnClientStart = new System.Windows.Forms.Button();
             this.txtClientPort = new System.Windows.Forms.TextBox();
+            this.tabServer = new System.Windows.Forms.TabPage();
+            this.ColumnNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hexContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
@@ -124,6 +123,7 @@
             this.tabControl1.SuspendLayout();
             this.tabClient.SuspendLayout();
             this.tabServer.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpen
@@ -181,54 +181,9 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 45;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(785, 257);
+            this.dataGridView1.Size = new System.Drawing.Size(867, 257);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
-            // 
-            // ColumnNo
-            // 
-            this.ColumnNo.DataPropertyName = "No";
-            this.ColumnNo.HeaderText = "No.";
-            this.ColumnNo.MinimumWidth = 6;
-            this.ColumnNo.Name = "ColumnNo";
-            this.ColumnNo.ReadOnly = true;
-            this.ColumnNo.Width = 50;
-            // 
-            // Column1
-            // 
-            this.Column1.DataPropertyName = "Status";
-            this.Column1.HeaderText = "状态";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 70;
-            // 
-            // Column3
-            // 
-            this.Column3.DataPropertyName = "DateTimeInfo";
-            this.Column3.HeaderText = "日期 & 时间";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 180;
-            // 
-            // Column2
-            // 
-            this.Column2.DataPropertyName = "Content";
-            this.Column2.HeaderText = "内容 ( 发送不含报头&终端 )";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 230;
-            // 
-            // hexContent
-            // 
-            this.hexContent.DataPropertyName = "ContentByHex";
-            this.hexContent.HeaderText = "Hex ( 包含报头终端 )";
-            this.hexContent.MinimumWidth = 6;
-            this.hexContent.Name = "hexContent";
-            this.hexContent.ReadOnly = true;
-            this.hexContent.Width = 200;
             // 
             // btnEmpty
             // 
@@ -248,22 +203,23 @@
             this.cmbCom.Name = "cmbCom";
             this.cmbCom.Size = new System.Drawing.Size(87, 21);
             this.cmbCom.TabIndex = 6;
+            this.cmbCom.SelectedValueChanged += new System.EventHandler(this.cmbCom_SelectedValueChanged);
             // 
             // ckbSendContinue
             // 
             this.ckbSendContinue.AutoSize = true;
-            this.ckbSendContinue.Location = new System.Drawing.Point(19, 85);
+            this.ckbSendContinue.Location = new System.Drawing.Point(9, 22);
             this.ckbSendContinue.Name = "ckbSendContinue";
-            this.ckbSendContinue.Size = new System.Drawing.Size(82, 18);
+            this.ckbSendContinue.Size = new System.Drawing.Size(54, 18);
             this.ckbSendContinue.TabIndex = 7;
-            this.ckbSendContinue.Text = "持续发送";
+            this.ckbSendContinue.Text = "启用";
             this.ckbSendContinue.UseVisualStyleBackColor = true;
             // 
             // txtTimeSpan
             // 
-            this.txtTimeSpan.Location = new System.Drawing.Point(34, 50);
+            this.txtTimeSpan.Location = new System.Drawing.Point(9, 98);
             this.txtTimeSpan.Name = "txtTimeSpan";
-            this.txtTimeSpan.Size = new System.Drawing.Size(114, 22);
+            this.txtTimeSpan.Size = new System.Drawing.Size(206, 22);
             this.txtTimeSpan.TabIndex = 8;
             // 
             // label1
@@ -278,47 +234,37 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 23);
+            this.label2.Location = new System.Drawing.Point(9, 75);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 14);
+            this.label2.Size = new System.Drawing.Size(119, 14);
             this.label2.TabIndex = 10;
-            this.label2.Text = "间隔发送时间";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(153, 54);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(21, 14);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "ms";
+            this.label2.Text = "间隔发送毫秒(ms)";
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.txtIncreasing);
             this.groupBox2.Controls.Add(this.ckbIncreasing);
             this.groupBox2.Controls.Add(this.ckbSendContinue);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.txtTimeSpan);
-            this.groupBox2.Location = new System.Drawing.Point(622, 13);
+            this.groupBox2.Location = new System.Drawing.Point(431, 191);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(177, 170);
+            this.groupBox2.Size = new System.Drawing.Size(224, 128);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "持续发送";
             // 
             // txtIncreasing
             // 
-            this.txtIncreasing.Location = new System.Drawing.Point(34, 140);
+            this.txtIncreasing.Location = new System.Drawing.Point(76, 46);
             this.txtIncreasing.Name = "txtIncreasing";
-            this.txtIncreasing.Size = new System.Drawing.Size(114, 22);
+            this.txtIncreasing.Size = new System.Drawing.Size(139, 22);
             this.txtIncreasing.TabIndex = 13;
             // 
             // ckbIncreasing
             // 
             this.ckbIncreasing.AutoSize = true;
-            this.ckbIncreasing.Location = new System.Drawing.Point(19, 113);
+            this.ckbIncreasing.Location = new System.Drawing.Point(9, 48);
             this.ckbIncreasing.Name = "ckbIncreasing";
             this.ckbIncreasing.Size = new System.Drawing.Size(68, 18);
             this.ckbIncreasing.TabIndex = 13;
@@ -333,12 +279,13 @@
             this.statusStrip_Status.Location = new System.Drawing.Point(0, 587);
             this.statusStrip_Status.Name = "statusStrip_Status";
             this.statusStrip_Status.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip_Status.Size = new System.Drawing.Size(806, 22);
+            this.statusStrip_Status.Size = new System.Drawing.Size(888, 22);
             this.statusStrip_Status.TabIndex = 15;
             this.statusStrip_Status.Text = "statusStrip1";
             // 
             // lblStatus
             // 
+            this.lblStatus.ForeColor = System.Drawing.Color.Red;
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(0, 17);
             // 
@@ -543,7 +490,7 @@
             // cbExportLog
             // 
             this.cbExportLog.AutoSize = true;
-            this.cbExportLog.Location = new System.Drawing.Point(446, 241);
+            this.cbExportLog.Location = new System.Drawing.Point(614, 65);
             this.cbExportLog.Name = "cbExportLog";
             this.cbExportLog.Size = new System.Drawing.Size(110, 18);
             this.cbExportLog.TabIndex = 18;
@@ -552,19 +499,10 @@
             // 
             // txtThreadSleep_BeforeReadExsiting
             // 
-            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(443, 213);
+            this.txtThreadSleep_BeforeReadExsiting.Location = new System.Drawing.Point(13, 22);
             this.txtThreadSleep_BeforeReadExsiting.Name = "txtThreadSleep_BeforeReadExsiting";
             this.txtThreadSleep_BeforeReadExsiting.Size = new System.Drawing.Size(124, 22);
             this.txtThreadSleep_BeforeReadExsiting.TabIndex = 19;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(440, 196);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(133, 14);
-            this.label8.TabIndex = 20;
-            this.label8.Text = "接收等待时间(毫秒)";
             // 
             // cbBaudRate
             // 
@@ -770,18 +708,18 @@
             // 
             this.btnDictShow.Location = new System.Drawing.Point(9, 22);
             this.btnDictShow.Name = "btnDictShow";
-            this.btnDictShow.Size = new System.Drawing.Size(60, 25);
+            this.btnDictShow.Size = new System.Drawing.Size(94, 25);
             this.btnDictShow.TabIndex = 28;
-            this.btnDictShow.Text = "显示";
+            this.btnDictShow.Text = "去除重复";
             this.btnDictShow.UseVisualStyleBackColor = true;
             // 
             // btnDictHidden
             // 
-            this.btnDictHidden.Location = new System.Drawing.Point(77, 22);
+            this.btnDictHidden.Location = new System.Drawing.Point(9, 50);
             this.btnDictHidden.Name = "btnDictHidden";
-            this.btnDictHidden.Size = new System.Drawing.Size(60, 25);
+            this.btnDictHidden.Size = new System.Drawing.Size(94, 25);
             this.btnDictHidden.TabIndex = 29;
-            this.btnDictHidden.Text = "隐藏";
+            this.btnDictHidden.Text = "显示全部";
             this.btnDictHidden.UseVisualStyleBackColor = true;
             // 
             // dataGridViewDict
@@ -800,7 +738,7 @@
             this.dataGridViewDict.ReadOnly = true;
             this.dataGridViewDict.RowHeadersWidth = 45;
             this.dataGridViewDict.RowTemplate.Height = 23;
-            this.dataGridViewDict.Size = new System.Drawing.Size(785, 257);
+            this.dataGridViewDict.Size = new System.Drawing.Size(867, 257);
             this.dataGridViewDict.TabIndex = 30;
             this.dataGridViewDict.Visible = false;
             this.dataGridViewDict.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewDict_CellMouseDoubleClick);
@@ -817,7 +755,7 @@
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.DataPropertyName = "DateTimeInfo";
-            this.dataGridViewTextBoxColumn3.HeaderText = "日期 & 时间";
+            this.dataGridViewTextBoxColumn3.HeaderText = "日期时间";
             this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
@@ -826,7 +764,7 @@
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.DataPropertyName = "Content";
-            this.dataGridViewTextBoxColumn4.HeaderText = "内容 ( 发送不含报头&终端 )";
+            this.dataGridViewTextBoxColumn4.HeaderText = "内容 ( 包含报头与终端信息 )";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
@@ -835,28 +773,28 @@
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.DataPropertyName = "ContentByHex";
-            this.dataGridViewTextBoxColumn5.HeaderText = "Hex ( 包含报头终端 )";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Hex ( 包含报头与终端信息 )";
             this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            this.dataGridViewTextBoxColumn5.Width = 200;
+            this.dataGridViewTextBoxColumn5.Width = 250;
             // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.btnDictShow);
             this.groupBox6.Controls.Add(this.btnDictHidden);
-            this.groupBox6.Location = new System.Drawing.Point(430, 266);
+            this.groupBox6.Location = new System.Drawing.Point(768, 13);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(143, 53);
+            this.groupBox6.Size = new System.Drawing.Size(109, 168);
             this.groupBox6.TabIndex = 32;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "去重发送内容列表";
+            this.groupBox6.Text = "列表信息去重";
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabClient);
             this.tabControl1.Controls.Add(this.tabServer);
-            this.tabControl1.Location = new System.Drawing.Point(579, 189);
+            this.tabControl1.Location = new System.Drawing.Point(661, 191);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(220, 130);
@@ -877,23 +815,6 @@
             this.tabClient.Size = new System.Drawing.Size(212, 103);
             this.tabClient.TabIndex = 0;
             this.tabClient.Text = "Client";
-            // 
-            // tabServer
-            // 
-            this.tabServer.BackColor = System.Drawing.SystemColors.Control;
-            this.tabServer.Controls.Add(this.label14);
-            this.tabServer.Controls.Add(this.label13);
-            this.tabServer.Controls.Add(this.btnServerStop);
-            this.tabServer.Controls.Add(this.txtServerIP);
-            this.tabServer.Controls.Add(this.btnServerStart);
-            this.tabServer.Controls.Add(this.txtServerPort);
-            this.tabServer.Controls.Add(this.cmbServerIP);
-            this.tabServer.Location = new System.Drawing.Point(4, 23);
-            this.tabServer.Name = "tabServer";
-            this.tabServer.Padding = new System.Windows.Forms.Padding(3);
-            this.tabServer.Size = new System.Drawing.Size(212, 103);
-            this.tabServer.TabIndex = 1;
-            this.tabServer.Text = "Server(特殊规则)";
             // 
             // label17
             // 
@@ -948,11 +869,84 @@
             this.txtClientPort.Size = new System.Drawing.Size(114, 22);
             this.txtClientPort.TabIndex = 29;
             // 
+            // tabServer
+            // 
+            this.tabServer.BackColor = System.Drawing.SystemColors.Control;
+            this.tabServer.Controls.Add(this.label14);
+            this.tabServer.Controls.Add(this.label13);
+            this.tabServer.Controls.Add(this.btnServerStop);
+            this.tabServer.Controls.Add(this.txtServerIP);
+            this.tabServer.Controls.Add(this.btnServerStart);
+            this.tabServer.Controls.Add(this.txtServerPort);
+            this.tabServer.Controls.Add(this.cmbServerIP);
+            this.tabServer.Location = new System.Drawing.Point(4, 23);
+            this.tabServer.Name = "tabServer";
+            this.tabServer.Padding = new System.Windows.Forms.Padding(3);
+            this.tabServer.Size = new System.Drawing.Size(212, 103);
+            this.tabServer.TabIndex = 1;
+            this.tabServer.Text = "Server(特殊规则)";
+            // 
+            // ColumnNo
+            // 
+            this.ColumnNo.DataPropertyName = "No";
+            this.ColumnNo.HeaderText = "No.";
+            this.ColumnNo.MinimumWidth = 6;
+            this.ColumnNo.Name = "ColumnNo";
+            this.ColumnNo.ReadOnly = true;
+            this.ColumnNo.Width = 50;
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "Status";
+            this.Column1.HeaderText = "状态";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 70;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "DateTimeInfo";
+            this.Column3.HeaderText = "日期时间";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 180;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "Content";
+            this.Column2.HeaderText = "内容 ( 包含报头与终端信息 )";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 230;
+            // 
+            // hexContent
+            // 
+            this.hexContent.DataPropertyName = "ContentByHex";
+            this.hexContent.HeaderText = "Hex ( 包含报头与终端信息 )";
+            this.hexContent.MinimumWidth = 6;
+            this.hexContent.Name = "hexContent";
+            this.hexContent.ReadOnly = true;
+            this.hexContent.Width = 250;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.txtThreadSleep_BeforeReadExsiting);
+            this.groupBox5.Location = new System.Drawing.Point(614, 13);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(148, 50);
+            this.groupBox5.TabIndex = 34;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "接收等待时间(毫秒)";
+            // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(806, 609);
+            this.ClientSize = new System.Drawing.Size(888, 609);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.dataGridViewDict);
@@ -961,8 +955,6 @@
             this.Controls.Add(this.cbReceiveEncoding);
             this.Controls.Add(this.cbSendEncoding);
             this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.txtThreadSleep_BeforeReadExsiting);
             this.Controls.Add(this.cbExportLog);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
@@ -997,6 +989,8 @@
             this.tabClient.PerformLayout();
             this.tabServer.ResumeLayout(false);
             this.tabServer.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1016,7 +1010,6 @@
         private System.Windows.Forms.TextBox txtTimeSpan;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtIncreasing;
         private System.Windows.Forms.CheckBox ckbIncreasing;
@@ -1041,13 +1034,7 @@
         private System.Windows.Forms.RadioButton rbReportEnd_CR_LF;
         private System.Windows.Forms.RadioButton rbReportEnd_CR;
         private System.Windows.Forms.CheckBox cbExportLog;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn hexContent;
         private System.Windows.Forms.TextBox txtThreadSleep_BeforeReadExsiting;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RadioButton rbReportEnd_None;
         private System.Windows.Forms.ComboBox cbBaudRate;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -1072,10 +1059,6 @@
         private System.Windows.Forms.Button btnDictShow;
         private System.Windows.Forms.Button btnDictHidden;
         private System.Windows.Forms.DataGridView dataGridViewDict;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.ComboBox cmbServerIP;
         private System.Windows.Forms.TabControl tabControl1;
@@ -1087,5 +1070,15 @@
         private System.Windows.Forms.TextBox txtClientIP;
         private System.Windows.Forms.Button btnClientStart;
         private System.Windows.Forms.TextBox txtClientPort;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn hexContent;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }

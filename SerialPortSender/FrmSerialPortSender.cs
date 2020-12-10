@@ -158,6 +158,11 @@ namespace SerialPortSender
             };
         }
 
+        private void Form_Load(object sender, EventArgs e)
+        {
+            this.LoadPortList();
+        }
+
         #region 设置 接收等待时间(毫秒)
 
         private void TxtThreadSleep_BeforeReadExsiting_TextChanged(object sender, EventArgs e)
@@ -288,40 +293,7 @@ namespace SerialPortSender
         private void CkbIncreasing_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox tmpCheckBox = sender as CheckBox;
-
-            if (tmpCheckBox.Checked)
-            {
-                string content = this.txtContent.Text;
-                int index = content.Length;
-                int tmp = 0;
-                for (int i = content.Length - 1; i > 0; i--)
-                {
-                    if (int.TryParse(content[i].ToString(), out tmp))
-                    {
-                        index = i;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                if (index == content.Length)
-                {
-                    MessageBox.Show("当前内容不能设置自增长");
-                    tmpCheckBox.Checked = false;
-                    FrmSerialPortSender.IncreasingAfterSend = false;
-                }
-                else
-                {
-                    FrmSerialPortSender.IncreasingAfterSend = tmpCheckBox.Checked;
-                }
-            }
-            else
-            {
-                FrmSerialPortSender.IncreasingAfterSend = false;
-            }
-
+            FrmSerialPortSender.IncreasingAfterSend = tmpCheckBox.Checked; // 自增长计算逻辑已优化, 无需再根据内容判断能否进行自增长
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -354,12 +326,25 @@ namespace SerialPortSender
 
         }
 
-        private void Form_Load(object sender, EventArgs e)
+        public string RefreshPortListInfo
         {
-            // 获取所有串口
-            var array = Util.IO.SerialPortUtil.GetPortNameList();
-            cmbCom.DataSource = array;
+            get { return "刷新..."; }
+        }
+
+        void LoadPortList()
+        {
+            var list = Util.IO.SerialPortUtil.GetPortNameList(); // 获取所有串口
+            list.Add(this.RefreshPortListInfo);
+            cmbCom.DataSource = list;
             this.PortUnEnabled();
+        }
+
+        private void cmbCom_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (cmbCom.SelectedValue.ToString() == this.RefreshPortListInfo)
+            {
+                this.LoadPortList();
+            }
         }
 
         private void PortEnabled()
@@ -440,7 +425,6 @@ namespace SerialPortSender
 
         private void btnScan_Click(object sender, EventArgs e)
         {
-            int tmpTryParse = 0;
             this.statusStrip_Status.Text = string.Empty;
             if (string.IsNullOrEmpty(this.txtContent.Text) || string.IsNullOrEmpty(this.txtContent.Text.Trim()))
             {
@@ -448,10 +432,8 @@ namespace SerialPortSender
                 return;
             }
 
-            if (
-                    (this.ckbIncreasing.Checked == true
-                    && (string.IsNullOrEmpty(this.txtIncreasing.Text) || !int.TryParse(this.txtIncreasing.Text, out tmpTryParse) || tmpTryParse <= 0)
-                    )
+            if (this.ckbIncreasing.Checked == true &&
+                (string.IsNullOrEmpty(this.txtIncreasing.Text) || !int.TryParse(this.txtIncreasing.Text, out int tmpTryParse) || tmpTryParse <= 0)
                )
             {
                 this.lblStatus.Text = "错误：未设置自增长值 或 自增长值有误。";
@@ -462,7 +444,7 @@ namespace SerialPortSender
             {
                 if (FrmSerialPortSender.IncreasingAfterSend)
                 {
-                    this.txtContent.Text = this.getIncreasingText(txtContent.Text);
+                    this.txtContent.Text = this.getIncreasingTextV2(txtContent.Text);
                 }
 
                 string sendContent = this.getSendContent(this.txtContent.Text);
@@ -473,7 +455,8 @@ namespace SerialPortSender
                 t.No = this.DataList.Count + 1;
                 t.Status = "发送";
                 t.DateTimeInfo = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                t.Content = txtContent.Text;
+                // t.Content = txtContent.Text;
+                t.Content = sendContent.StringShowSpecialSymbol();
                 t.ContentByHex = ByteArray2HexString(sendContent);
 
                 List<DataModel> templ = new List<DataModel>();
@@ -513,6 +496,7 @@ namespace SerialPortSender
             }
         }
 
+        [Obsolete("已改用V2版本")]
         private string getIncreasingText(string content)
         {
             int index = 0;
@@ -541,12 +525,45 @@ namespace SerialPortSender
             return result;
         }
 
+        /// <summary>
+        /// 根据自增长数值, 计算发送内容
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        string getIncreasingTextV2(string content)
+        {
+            var matches = System.Text.RegularExpressions.Regex.Matches(content, "[0-9]+");
+
+            System.Text.RegularExpressions.Match match = null;
+
+            for (int i = matches.Count - 1; i >= 0;)
+            {
+                match = matches[i];
+                break;
+            }
+
+            if (match == null)
+            {
+                return $"{content}1";
+            }
+
+            string prefix = content.Substring(0, match.Index); // 自增长前缀信息
+            string suffix = content.Substring(match.Index + match.Length); // 自增长后缀信息
+
+            long a = 0;
+            long.TryParse(content.Substring(match.Index, match.Length), out a);
+            string increaseInfo = (a + 1).ToString().PadLeft(match.Length, '0'); // 自增长
+
+            string r = $"{prefix}{increaseInfo}{suffix}";
+            return r;
+        }
+
         private void btnEmpty_Click(object sender, EventArgs e)
         {
             //DataList = new List<DataModel>();
             //dataGridView1.DataSource = DataList;
 
-            this.txtContent.Text = string.Empty;            
+            this.txtContent.Text = string.Empty;
             this.txtContent.Focus();
         }
 
@@ -1026,7 +1043,7 @@ namespace SerialPortSender
         #endregion
 
         #region 以 Socket 的方式连接到扫描头服务端
-        
+
         TcpClient mTcpClient { get; set; }
 
         // 创建接收消息的线程
@@ -1062,7 +1079,7 @@ namespace SerialPortSender
 
                 mtaskReceive.Start();
 
-                this.btnClientStop.Enabled = true;                
+                this.btnClientStop.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -1117,7 +1134,7 @@ namespace SerialPortSender
             {
                 mTcpClient.Client.Close();
 
-                this.btnClientStart.Enabled = true;               
+                this.btnClientStart.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -1127,5 +1144,6 @@ namespace SerialPortSender
         }
 
         #endregion
+
     }
 }
