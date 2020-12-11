@@ -28,7 +28,7 @@ namespace SerialPortSender
         /// <summary>
         /// 发送数据List
         /// </summary>
-        public List<DataModel> DataList = new List<DataModel>();
+        public List<DataModel> mDataList = new List<DataModel>();
 
         /// <summary>
         /// 去除重复的发送数据List
@@ -452,24 +452,28 @@ namespace SerialPortSender
                 serialPort1.Write(toWrite, 0, toWrite.Length);
 
                 DataModel t = new DataModel();
-                t.No = this.DataList.Count + 1;
+                t.No = this.mDataList.Count + 1;
                 t.Status = "发送";
-                t.DateTimeInfo = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                // t.Content = txtContent.Text;
+                t.DateTime = DateTime.Now;
+                // t.DateTimeInfo = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                t.Encoding = mSendEncoding.BodyName.ToString();
+                
+                t.InputContent = txtContent.Text;
                 t.Content = sendContent.StringShowSpecialSymbol();
-                t.ContentByHex = ByteArray2HexString(sendContent);
+                t.ContentByHex = ByteArray2HexString(sendContent, mSendEncoding);
+                
 
                 List<DataModel> templ = new List<DataModel>();
                 templ.Add(t);
-                templ.AddRange(this.DataList);
-                this.DataList = templ;
-                dataGridView1.DataSource = DataList;
+                templ.AddRange(this.mDataList);
+                this.mDataList = templ;
+                dataGridView1.DataSource = mDataList;
 
                 string key = txtContent.Text;
                 DataModel dictToAdd = null;
                 if (mDict.TryGetValue(key, out dictToAdd) == true)
                 {
-                    dictToAdd.DateTimeInfo = t.DateTimeInfo;
+                    dictToAdd.DateTime = t.DateTime;
                 }
                 else
                 {
@@ -487,7 +491,8 @@ namespace SerialPortSender
 
                 if (cbExportLog.Checked == true)
                 {
-                    LogAsync(t);
+                    // LogAsync(t);
+                    LogAsync_V2(t);
                 }
             }
             catch (Exception ex)
@@ -496,34 +501,6 @@ namespace SerialPortSender
             }
         }
 
-        [Obsolete("已改用V2版本")]
-        private string getIncreasingText(string content)
-        {
-            int index = 0;
-            int tmp = 0;
-            for (int i = content.Length - 1; i > 0; i--)
-            {
-                if (int.TryParse(content[i].ToString(), out tmp))
-                {
-                    index = i;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            long a = 0;
-            long.TryParse(content.Substring(index), out a);
-
-            int length = content.Length - index; // 字符串占位长度
-            int numberLength = a.ToString().Length; // 长度
-            int newLength = (a + 1).ToString().Length; // 自增长后长度
-
-            string m = ((a + 1).ToString().PadLeft(length, '0')); //自增长后字符串
-            string result = content.Substring(0, index) + m;
-
-            return result;
-        }
 
         /// <summary>
         /// 根据自增长数值, 计算发送内容
@@ -560,8 +537,6 @@ namespace SerialPortSender
 
         private void btnEmpty_Click(object sender, EventArgs e)
         {
-            //DataList = new List<DataModel>();
-            //dataGridView1.DataSource = DataList;
 
             this.txtContent.Text = string.Empty;
             this.txtContent.Focus();
@@ -594,29 +569,33 @@ namespace SerialPortSender
                 barcode = mReceiveEncoding.GetString(buf, 0, buf.Length);
 
                 DataModel t = new DataModel();
-                t.No = this.DataList.Count + 1;
+                t.No = this.mDataList.Count + 1;
                 t.Status = "接收";
-                t.DateTimeInfo = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                t.Content = barcode;
+                t.DateTime = DateTime.Now;
+                // t.DateTimeInfo = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                t.Encoding = mReceiveEncoding.BodyName;
+                t.Content = barcode.StringShowSpecialSymbol();
+                t.InputContent = barcode.Trim();
                 t.ContentByHex = ByteArray2HexString(buf);
 
                 List<DataModel> templ = new List<DataModel>();
                 templ.Add(t);
-                templ.AddRange(DataList);
-                DataList = templ;
+                templ.AddRange(mDataList);
+                mDataList = templ;
 
                 if (cbExportLog.Checked == true)
                 {
-                    LogAsync(t);
+                    LogAsync_V2(t);
                 }
 
-                this.Invoke
-                (
-                    (EventHandler)(delegate
-                    {
-                        dataGridView1.DataSource = DataList;
-                    })
-                );
+                //this.Invoke
+                //(
+                //    (EventHandler)(delegate
+                //    {
+                //        dataGridView1.DataSource = DataList;
+                //    })
+                //);
+                this.Invoke(new Action(() => { dataGridView1.DataSource = mDataList; }));
             }
             catch (Exception ex)
             {
@@ -644,9 +623,9 @@ namespace SerialPortSender
             return contentByHex;
         }
 
-        public static string ByteArray2HexString(string msg)
+        public static string ByteArray2HexString(string msg, Encoding encoding)
         {
-            byte[] buf = System.Text.Encoding.Default.GetBytes(msg);
+            byte[] buf = encoding.GetBytes(msg);
             string contentByHex = string.Empty;
 
             foreach (byte i in buf)
@@ -769,45 +748,61 @@ namespace SerialPortSender
 
         #region 导出日志
 
-        private void LogAsync(DataModel args)
+        string getDBFilePath()
         {
-            System.Threading.Tasks.Task myTask = new System.Threading.Tasks.Task(() =>
+            var dir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "SerialPortSenderLog");
+
+            if (System.IO.Directory.Exists(dir) == false)
             {
-                var dir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "SerialPortSenderLog");
+                System.IO.Directory.CreateDirectory(dir);
+            }
 
-                if (System.IO.Directory.Exists(dir) == false)
-                {
-                    System.IO.Directory.CreateDirectory(dir);
-                }
+            var fileName = string.Format("Log_{0}.db", DateTime.Now.ToString("yyyy-MM-dd"));
+            var filePath = System.IO.Path.Combine(dir, fileName);
 
-                var fileName = string.Format("Log_{0}.csvx", DateTime.Now.ToString("yyyy-MM-dd"));
+            return filePath;
+        }
 
-                var filePath = System.IO.Path.Combine(dir, fileName);
+        string getConnStr()
+        {
+            // return Util.DBHelper.SQLiteConnStr(getDBFilePath(), password: "github.com/howesdomo/"); // SQLite 免费版不支持加密
+            // SQL logic error
+            // Cannot use "Password" connection string property: library was not built with encryption support.
+            return Util.DBHelper.SQLiteConnStr(getDBFilePath());
+        }
 
-                System.IO.FileMode fileMode = System.IO.FileMode.Append;
-                if (System.IO.File.Exists(filePath) == false)
-                {
-                    fileMode = System.IO.FileMode.Create;
-                }
+        void LogAsync_V2(DataModel args)
+        {
+            // 未有数据库文件, 新建文件并用脚本构建结构
+            if (System.IO.File.Exists(getDBFilePath()) == false)
+            {
+                // 采用脚本创建数据库结构
+                //string copyFrom = System.IO.Path.Combine(Environment.CurrentDirectory, "DataBaseSeed.db");
+                //System.IO.File.Copy(copyFrom, getDBFilePath());
 
-                using (System.IO.FileStream fs = new System.IO.FileStream(filePath, fileMode))
-                {
-                    byte[] toWrite = System.Text.Encoding.Default.GetBytes(args.CSVXContent());
-                    if (fileMode == System.IO.FileMode.Append)
-                    {
-                        fs.Write(toWrite, 0, toWrite.Length);
-                    }
-                    else
-                    {
-                        byte[] head = System.Text.Encoding.Default.GetBytes(args.CSVXHeader());
-                        fs.Write(head, 0, head.Length);
-                        fs.Write(toWrite, 0, toWrite.Length);
-                        fs.Flush();
-                    }
-                }
-            });
+                Util.DBHelper.GetDataSet
+                (
+                    factory: Util.DBHelper.GetDbProviderFactory(Util.DbProvider.SQLite),
+                    connectionString: getConnStr(),
+                    argCommandType: System.Data.CommandType.Text,
+                    commandText: "CREATE TABLE \"main\".\"MyData\"(\"Status\"  TEXT NOT NULL, \"DateTimeTick\"  INTEGER NOT NULL, \"DateTimeInfo\"  TEXT NOT NULL, \"Encoding\"  TEXT, \"Content\"  TEXT, \"Hex\"  TEXT, PRIMARY KEY(\"DateTimeTick\") ) ;",
+                    paramsList: null,
+                    isBeginTransaction: true, // SQLite 推荐开启事务进行 CUD 操作
+                    isRollbackForTest: false
+                );
+            }
 
-            myTask.Start();
+            // 插入数据
+            Util.DBHelper.GetDataSet
+            (
+                factory: Util.DBHelper.GetDbProviderFactory(Util.DbProvider.SQLite),
+                connectionString: getConnStr(),
+                argCommandType: System.Data.CommandType.Text,
+                commandText: args.SQLiteInsert(),
+                paramsList: null,
+                isBeginTransaction: true, // SQLite 推荐开启事务进行 CUD 操作
+                isRollbackForTest: false
+            );
         }
 
         #endregion
@@ -825,9 +820,8 @@ namespace SerialPortSender
             }
 
             var rowCollection = this.dataGridView1.Rows[e.RowIndex];
-            var cell = rowCollection.Cells[e.ColumnIndex];
+            var cell = rowCollection.Cells["colInputContent"];
             string content = cell.Value.ToString();
-
             this.txtContent.Text = content;
         }
 
@@ -838,10 +832,9 @@ namespace SerialPortSender
                 return;
             }
 
-            var rowCollection = this.dataGridViewDict.Rows[e.RowIndex];
-            var cell = rowCollection.Cells[e.ColumnIndex];
+            var rowCollection = this.dataGridViewDict.Rows[e.RowIndex];            
+            var cell = rowCollection.Cells["col2InputContent"]; 
             string content = cell.Value.ToString();
-
             this.txtContent.Text = content;
         }
 
@@ -1145,5 +1138,24 @@ namespace SerialPortSender
 
         #endregion
 
+        private void cbTopMost_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox tmpCheckBox = sender as CheckBox;
+            this.TopMost = tmpCheckBox.Checked;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.ProgressUtils.ExcuteBatCMD($"start https://github.com/howesdomo/SerialPortSender");
+        }
+
+        private void btnClearList_Click(object sender, EventArgs e)
+        {
+            mDataList = new List<DataModel>();
+            dataGridView1.DataSource = mDataList;
+
+            mDict = new Dictionary<string, DataModel>();
+            dataGridViewDict.DataSource = new List<DataModel>();
+        }
     }
 }

@@ -13,6 +13,8 @@ namespace SerialPortSender
         [STAThread]
         static void Main()
         {
+            Util.DBHelper.SQLiteFactory = System.Data.SQLite.SQLiteFactory.Instance;           
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FrmSerialPortSender());

@@ -35,6 +35,14 @@
             this.btnScan = new System.Windows.Forms.Button();
             this.txtContent = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ColumnNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEncoding = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hexContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colInputContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnEmpty = new System.Windows.Forms.Button();
             this.cmbCom = new System.Windows.Forms.ComboBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
@@ -92,11 +100,16 @@
             this.btnDictShow = new System.Windows.Forms.Button();
             this.btnDictHidden = new System.Windows.Forms.Button();
             this.dataGridViewDict = new System.Windows.Forms.DataGridView();
+            this.colNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.col2Encoding = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.col2InputContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnClearList = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabClient = new System.Windows.Forms.TabPage();
             this.label17 = new System.Windows.Forms.Label();
@@ -106,12 +119,9 @@
             this.btnClientStart = new System.Windows.Forms.Button();
             this.txtClientPort = new System.Windows.Forms.TextBox();
             this.tabServer = new System.Windows.Forms.TabPage();
-            this.ColumnNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.hexContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cbTopMost = new System.Windows.Forms.CheckBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.statusStrip_Status.SuspendLayout();
@@ -158,6 +168,8 @@
             // 
             // txtContent
             // 
+            this.txtContent.AcceptsReturn = true;
+            this.txtContent.AcceptsTab = true;
             this.txtContent.Location = new System.Drawing.Point(50, 50);
             this.txtContent.Multiline = true;
             this.txtContent.Name = "txtContent";
@@ -174,16 +186,94 @@
             this.ColumnNo,
             this.Column1,
             this.Column3,
+            this.colEncoding,
             this.Column2,
-            this.hexContent});
+            this.hexContent,
+            this.columnDateTime,
+            this.colInputContent});
             this.dataGridView1.Location = new System.Drawing.Point(12, 325);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 45;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(867, 257);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
+            // 
+            // ColumnNo
+            // 
+            this.ColumnNo.DataPropertyName = "No";
+            this.ColumnNo.HeaderText = "No.";
+            this.ColumnNo.MinimumWidth = 6;
+            this.ColumnNo.Name = "ColumnNo";
+            this.ColumnNo.ReadOnly = true;
+            this.ColumnNo.Width = 50;
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "Status";
+            this.Column1.HeaderText = "状态";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 70;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "DateTimeInfo";
+            this.Column3.HeaderText = "日期时间";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 180;
+            // 
+            // colEncoding
+            // 
+            this.colEncoding.DataPropertyName = "Encoding";
+            this.colEncoding.HeaderText = "编码格式";
+            this.colEncoding.MinimumWidth = 6;
+            this.colEncoding.Name = "colEncoding";
+            this.colEncoding.ReadOnly = true;
+            this.colEncoding.Width = 110;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "Content";
+            this.Column2.HeaderText = "内容 ( 包含报头与终端信息 )";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 230;
+            // 
+            // hexContent
+            // 
+            this.hexContent.DataPropertyName = "ContentByHex";
+            this.hexContent.HeaderText = "Hex ( 包含报头与终端信息 )";
+            this.hexContent.MinimumWidth = 6;
+            this.hexContent.Name = "hexContent";
+            this.hexContent.ReadOnly = true;
+            this.hexContent.Width = 250;
+            // 
+            // columnDateTime
+            // 
+            this.columnDateTime.DataPropertyName = "DateTime";
+            this.columnDateTime.HeaderText = "[隐藏]DateTime";
+            this.columnDateTime.MinimumWidth = 6;
+            this.columnDateTime.Name = "columnDateTime";
+            this.columnDateTime.ReadOnly = true;
+            this.columnDateTime.Visible = false;
+            this.columnDateTime.Width = 110;
+            // 
+            // colInputContent
+            // 
+            this.colInputContent.DataPropertyName = "InputContent";
+            this.colInputContent.HeaderText = "[隐藏]InputContent";
+            this.colInputContent.MinimumWidth = 6;
+            this.colInputContent.Name = "colInputContent";
+            this.colInputContent.ReadOnly = true;
+            this.colInputContent.Visible = false;
+            this.colInputContent.Width = 110;
             // 
             // btnEmpty
             // 
@@ -492,9 +582,9 @@
             this.cbExportLog.AutoSize = true;
             this.cbExportLog.Location = new System.Drawing.Point(614, 65);
             this.cbExportLog.Name = "cbExportLog";
-            this.cbExportLog.Size = new System.Drawing.Size(110, 18);
+            this.cbExportLog.Size = new System.Drawing.Size(82, 18);
             this.cbExportLog.TabIndex = 18;
-            this.cbExportLog.Text = "生成日志文件";
+            this.cbExportLog.Text = "记录数据";
             this.cbExportLog.UseVisualStyleBackColor = true;
             // 
             // txtThreadSleep_BeforeReadExsiting
@@ -729,19 +819,34 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewDict.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewDict.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colNo,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
+            this.colDateTime,
+            this.col2Encoding,
             this.dataGridViewTextBoxColumn4,
-            this.dataGridViewTextBoxColumn5});
+            this.dataGridViewTextBoxColumn5,
+            this.col2InputContent});
             this.dataGridViewDict.Location = new System.Drawing.Point(12, 325);
             this.dataGridViewDict.Name = "dataGridViewDict";
             this.dataGridViewDict.ReadOnly = true;
+            this.dataGridViewDict.RowHeadersVisible = false;
             this.dataGridViewDict.RowHeadersWidth = 45;
             this.dataGridViewDict.RowTemplate.Height = 23;
             this.dataGridViewDict.Size = new System.Drawing.Size(867, 257);
             this.dataGridViewDict.TabIndex = 30;
             this.dataGridViewDict.Visible = false;
             this.dataGridViewDict.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewDict_CellMouseDoubleClick);
+            // 
+            // colNo
+            // 
+            this.colNo.DataPropertyName = "No";
+            this.colNo.HeaderText = "[隐藏]No.";
+            this.colNo.MinimumWidth = 6;
+            this.colNo.Name = "colNo";
+            this.colNo.ReadOnly = true;
+            this.colNo.Visible = false;
+            this.colNo.Width = 110;
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -761,6 +866,26 @@
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             this.dataGridViewTextBoxColumn3.Width = 180;
             // 
+            // colDateTime
+            // 
+            this.colDateTime.DataPropertyName = "DateTime";
+            this.colDateTime.HeaderText = "[隐藏]DateTime";
+            this.colDateTime.MinimumWidth = 6;
+            this.colDateTime.Name = "colDateTime";
+            this.colDateTime.ReadOnly = true;
+            this.colDateTime.Visible = false;
+            this.colDateTime.Width = 110;
+            // 
+            // col2Encoding
+            // 
+            this.col2Encoding.DataPropertyName = "Encoding";
+            this.col2Encoding.HeaderText = "[隐藏]Encoding";
+            this.col2Encoding.MinimumWidth = 6;
+            this.col2Encoding.Name = "col2Encoding";
+            this.col2Encoding.ReadOnly = true;
+            this.col2Encoding.Visible = false;
+            this.col2Encoding.Width = 110;
+            // 
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.DataPropertyName = "Content";
@@ -779,8 +904,19 @@
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.Width = 250;
             // 
+            // col2InputContent
+            // 
+            this.col2InputContent.DataPropertyName = "InputContent";
+            this.col2InputContent.HeaderText = "[隐藏]InputContent";
+            this.col2InputContent.MinimumWidth = 6;
+            this.col2InputContent.Name = "col2InputContent";
+            this.col2InputContent.ReadOnly = true;
+            this.col2InputContent.Visible = false;
+            this.col2InputContent.Width = 110;
+            // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.btnClearList);
             this.groupBox6.Controls.Add(this.btnDictShow);
             this.groupBox6.Controls.Add(this.btnDictHidden);
             this.groupBox6.Location = new System.Drawing.Point(768, 13);
@@ -788,7 +924,17 @@
             this.groupBox6.Size = new System.Drawing.Size(109, 168);
             this.groupBox6.TabIndex = 32;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "列表信息去重";
+            this.groupBox6.Text = "列表信息";
+            // 
+            // btnClearList
+            // 
+            this.btnClearList.Location = new System.Drawing.Point(9, 137);
+            this.btnClearList.Name = "btnClearList";
+            this.btnClearList.Size = new System.Drawing.Size(94, 25);
+            this.btnClearList.TabIndex = 30;
+            this.btnClearList.Text = "清空列表";
+            this.btnClearList.UseVisualStyleBackColor = true;
+            this.btnClearList.Click += new System.EventHandler(this.btnClearList_Click);
             // 
             // tabControl1
             // 
@@ -886,51 +1032,6 @@
             this.tabServer.TabIndex = 1;
             this.tabServer.Text = "Server(特殊规则)";
             // 
-            // ColumnNo
-            // 
-            this.ColumnNo.DataPropertyName = "No";
-            this.ColumnNo.HeaderText = "No.";
-            this.ColumnNo.MinimumWidth = 6;
-            this.ColumnNo.Name = "ColumnNo";
-            this.ColumnNo.ReadOnly = true;
-            this.ColumnNo.Width = 50;
-            // 
-            // Column1
-            // 
-            this.Column1.DataPropertyName = "Status";
-            this.Column1.HeaderText = "状态";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 70;
-            // 
-            // Column3
-            // 
-            this.Column3.DataPropertyName = "DateTimeInfo";
-            this.Column3.HeaderText = "日期时间";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 180;
-            // 
-            // Column2
-            // 
-            this.Column2.DataPropertyName = "Content";
-            this.Column2.HeaderText = "内容 ( 包含报头与终端信息 )";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 230;
-            // 
-            // hexContent
-            // 
-            this.hexContent.DataPropertyName = "ContentByHex";
-            this.hexContent.HeaderText = "Hex ( 包含报头与终端信息 )";
-            this.hexContent.MinimumWidth = 6;
-            this.hexContent.Name = "hexContent";
-            this.hexContent.ReadOnly = true;
-            this.hexContent.Width = 250;
-            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.txtThreadSleep_BeforeReadExsiting);
@@ -941,11 +1042,35 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "接收等待时间(毫秒)";
             // 
+            // cbTopMost
+            // 
+            this.cbTopMost.AutoSize = true;
+            this.cbTopMost.Location = new System.Drawing.Point(614, 89);
+            this.cbTopMost.Name = "cbTopMost";
+            this.cbTopMost.Size = new System.Drawing.Size(82, 18);
+            this.cbTopMost.TabIndex = 35;
+            this.cbTopMost.Text = "窗口置顶";
+            this.cbTopMost.UseVisualStyleBackColor = true;
+            this.cbTopMost.CheckedChanged += new System.EventHandler(this.cbTopMost_CheckedChanged);
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(614, 167);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(147, 14);
+            this.linkLabel1.TabIndex = 37;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "github.com/howesdomo";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // FrmSerialPortSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(888, 609);
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.cbTopMost);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox6);
@@ -1070,15 +1195,25 @@
         private System.Windows.Forms.TextBox txtClientIP;
         private System.Windows.Forms.Button btnClientStart;
         private System.Windows.Forms.TextBox txtClientPort;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox cbTopMost;
+        private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEncoding;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn hexContent;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn columnDateTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colInputContent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDateTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn col2Encoding;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn col2InputContent;
+        private System.Windows.Forms.Button btnClearList;
     }
 }
