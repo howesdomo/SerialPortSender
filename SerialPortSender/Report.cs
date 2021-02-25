@@ -18,5 +18,12 @@ namespace SerialPortSender
 
         public string ASCIIString { get; set; }
 
+        public void SetValue(string a, Encoding encoding)
+        {
+            this.Value = a;
+            this.DisplayName = a.StringShowSpecialSymbol();
+            this.HexString = a.ToHexString(encoding);
+        }
+
     }
 }

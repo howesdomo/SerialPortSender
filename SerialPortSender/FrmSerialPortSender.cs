@@ -55,12 +55,6 @@ namespace SerialPortSender
             this.txtThreadSleep_BeforeReadExsiting.Text = cThreadSleep_BeforeRead.ToString();
             this.txtTimeSpan.Text = "1000";
 
-            this.rbReportHead_None.Checked = true;  // 初始化配置 开始符号 无
-            this.RbReportHead_AllBtn_Click(this.rbReportHead_None, null);
-
-            this.rbReportEnd_CR_LF.Checked = true; // 初始化配置 结束符合 \r\n
-            this.RbReportEnd_AllBtn_Click(this.rbReportEnd_CR_LF, null);
-
             var baudRateList = Util.IO.SerialPortUtil.GetBaudRateList();
             this.cbBaudRate.DataSource = baudRateList;
             this.cbBaudRate.DisplayMember = "DisplayName";
@@ -91,6 +85,12 @@ namespace SerialPortSender
 
             this.cbReceiveEncoding.DataSource = mEncodingList2;
             this.cbReceiveEncoding.DisplayMember = "BodyName";
+
+            this.rbReportHead_None.Checked = true;  // 初始化配置 开始符号 无
+            this.RbReportHead_AllBtn_Click(this.rbReportHead_None, null);
+
+            this.rbReportEnd_CR_LF.Checked = true; // 初始化配置 结束符合 \r\n
+            this.RbReportEnd_AllBtn_Click(this.rbReportEnd_CR_LF, null);
 
             mServerIPList = Howe.Helper.WinNetworkHelper.GetAllDevice();
             cmbServerIP.DataSource = mServerIPList;
@@ -123,12 +123,14 @@ namespace SerialPortSender
             this.rbReportHead_STX.Click += RbReportHead_AllBtn_Click;
             this.rbReportHead_ESC.Click += RbReportHead_AllBtn_Click;
             this.rbReportHead_UserSetting.Click += RbReportHead_AllBtn_Click;
+            this.txtReportHead_Hex.TextChanged += txtReportHead_Hex_TextChanged;
 
             this.rbReportEnd_None.Click += RbReportEnd_AllBtn_Click;
             this.rbReportEnd_CR.Click += RbReportEnd_AllBtn_Click;
             this.rbReportEnd_ETX.Click += RbReportEnd_AllBtn_Click;
             this.rbReportEnd_CR_LF.Click += RbReportEnd_AllBtn_Click;
             this.rbReportEnd_UserSetting.Click += RbReportEnd_AllBtn_Click;
+            this.txtReportEnd_Hex.TextChanged += txtReportEnd_Hex_TextChanged;
 
             this.txtThreadSleep_BeforeReadExsiting.TextChanged += TxtThreadSleep_BeforeReadExsiting_TextChanged;
             this.txtThreadSleep_BeforeReadExsiting.LostFocus += TxtThreadSleep_BeforeReadExsiting_LostFocus;
@@ -322,8 +324,8 @@ namespace SerialPortSender
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                this.serialPort1.DataReceived -= new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             }
-
         }
 
         public string RefreshPortListInfo
@@ -426,14 +428,14 @@ namespace SerialPortSender
         private void btnScan_Click(object sender, EventArgs e)
         {
             this.statusStrip_Status.Text = string.Empty;
-            if (string.IsNullOrEmpty(this.txtContent.Text) || string.IsNullOrEmpty(this.txtContent.Text.Trim()))
+            if (string.IsNullOrEmpty(this.txtContent.Text)) // 不能发送全空内容, 但能发送空格
             {
                 this.lblStatus.Text = "错误：发送内容为空。";
                 return;
             }
 
             if (this.ckbIncreasing.Checked == true &&
-                (string.IsNullOrEmpty(this.txtIncreasing.Text) || !int.TryParse(this.txtIncreasing.Text, out int tmpTryParse) || tmpTryParse <= 0)
+                (string.IsNullOrEmpty(this.txtIncreasing.Text) || !int.TryParse(this.txtIncreasing.Text, out int tmpTryParse) || tmpTryParse < 0) // 自增长可以等于0
                )
             {
                 this.lblStatus.Text = "错误：未设置自增长值 或 自增长值有误。";
@@ -457,11 +459,11 @@ namespace SerialPortSender
                 t.DateTime = DateTime.Now;
                 // t.DateTimeInfo = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 t.Encoding = mSendEncoding.BodyName.ToString();
-                
+
                 t.InputContent = txtContent.Text;
                 t.Content = sendContent.StringShowSpecialSymbol();
                 t.ContentByHex = ByteArray2HexString(sendContent, mSendEncoding);
-                
+
 
                 List<DataModel> templ = new List<DataModel>();
                 templ.Add(t);
@@ -665,33 +667,30 @@ namespace SerialPortSender
 
             if (this.rbReportHead_None.Checked)
             {
-                r.Value = string.Empty;
-
-                r.DisplayName = "无";
-                r.ASCIIString = string.Empty;
-                r.HexString = string.Empty;
+                r.SetValue(string.Empty, mSendEncoding);
             }
             else if (this.rbReportHead_STX.Checked)
             {
-                char tmp = (char)0x02;
-                r.Value = tmp.ToString();
-
-                r.DisplayName = "STX";
-                r.ASCIIString = r.Value.ToString();
-                r.HexString = "02";
+                r.SetValue("\x02", mSendEncoding);
             }
             else if (this.rbReportHead_ESC.Checked)
             {
-                char tmp = (char)0x1B;
-                r.Value = tmp.ToString();
-
-                r.DisplayName = "ESC";
-                r.ASCIIString = r.Value.ToString();
-                r.HexString = "1B";
+                r.SetValue("\x1B", mSendEncoding);
             }
             else if (this.rbReportHead_UserSetting.Checked)
             {
+                string args = string.Empty;
 
+                try
+                {
+                    args = mSendEncoding.GetString(this.txtReportHead_Hex.Text.HexString2ByteArray(" "));
+                }
+                catch (Exception)
+                {
+                    this.lblStatus.Text = $"自定义报头信息转换失败";
+                }
+
+                r.SetValue(args, mSendEncoding);
             }
 
             return r;
@@ -703,45 +702,62 @@ namespace SerialPortSender
 
             if (this.rbReportEnd_None.Checked)
             {
-                r.Value = string.Empty;
-                r.DisplayName = "无";
-                r.ASCIIString = r.Value.ToString();
-                r.HexString = string.Empty;
+                r.SetValue(string.Empty, mSendEncoding);
             }
             else if (this.rbReportEnd_CR.Checked)
             {
-                char tmp = (char)0x0D;
-
-                r.Value = tmp.ToString();
-                r.DisplayName = "CR";
-                r.ASCIIString = r.Value.ToString();
-                r.HexString = "0D";
+                r.SetValue("\x0D", mSendEncoding);
             }
             else if (this.rbReportEnd_ETX.Checked)
             {
-                char tmp = (char)0x03;
-
-                r.Value = tmp.ToString();
-                r.DisplayName = "ETX";
-                r.ASCIIString = r.Value.ToString();
-                r.HexString = "03";
+                r.SetValue("\x03", mSendEncoding);
             }
             else if (this.rbReportEnd_CR_LF.Checked)
             {
-                char tmp1 = (char)0x0D;
-                char tmp2 = (char)0x0A;
-
-                r.Value = string.Format("{0}{1}", tmp1, tmp2);
-                r.DisplayName = "CL+LF";
-                r.ASCIIString = r.Value.ToString();
-                r.HexString = "OD OA";
+                r.SetValue("\x0D\x0A", mSendEncoding);
             }
             else if (this.rbReportEnd_UserSetting.Checked)
             {
+                string args = string.Empty;
 
+                try
+                {
+                    args = mSendEncoding.GetString(this.txtReportEnd_Hex.Text.HexString2ByteArray(" "));
+                }
+                catch (Exception)
+                {
+                    this.lblStatus.Text = $"自定义终端信息转换失败";
+                }
+                r.SetValue(args, mSendEncoding);
             }
 
             return r;
+        }
+
+        private void txtReportHead_Hex_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                mSendEncoding.GetString(this.txtReportHead_Hex.Text.HexString2ByteArray(" "));
+                this.lblStatus.Text = string.Empty;
+            }
+            catch (Exception)
+            {
+                this.lblStatus.Text = $"自定义报头信息转换失败";
+            }
+        }
+
+        private void txtReportEnd_Hex_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                mSendEncoding.GetString(this.txtReportEnd_Hex.Text.HexString2ByteArray(" "));
+                this.lblStatus.Text = string.Empty;
+            }
+            catch (Exception)
+            {
+                this.lblStatus.Text = $"自定义终端信息转换失败";
+            }
         }
 
         #endregion
@@ -832,8 +848,8 @@ namespace SerialPortSender
                 return;
             }
 
-            var rowCollection = this.dataGridViewDict.Rows[e.RowIndex];            
-            var cell = rowCollection.Cells["col2InputContent"]; 
+            var rowCollection = this.dataGridViewDict.Rows[e.RowIndex];
+            var cell = rowCollection.Cells["col2InputContent"];
             string content = cell.Value.ToString();
             this.txtContent.Text = content;
         }
@@ -856,18 +872,18 @@ namespace SerialPortSender
 
         List<Encoding> mEncodingList = new List<Encoding>()
         {
-            Encoding.Default,
-            Encoding.ASCII,
+            Encoding.GetEncoding(936),
             Encoding.UTF8,
-            Encoding.Unicode
+            Encoding.Unicode,
+            Encoding.ASCII,
         };
 
         List<Encoding> mEncodingList2 = new List<Encoding>()
         {
-            Encoding.Default,
-            Encoding.ASCII,
+            Encoding.GetEncoding(936),
             Encoding.UTF8,
-            Encoding.Unicode
+            Encoding.Unicode,
+            Encoding.ASCII,
         };
 
         private Encoding mSendEncoding { get; set; }
